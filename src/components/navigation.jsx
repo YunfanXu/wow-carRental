@@ -1,4 +1,9 @@
-export const Navigation = (props) => {
+export const Navigation = ({ handleLoginClick }) => {
+  const handleClick = () => {
+    console.log("clicked login")
+    handleLoginClick();
+  };
+
   return (
     <nav id='menu' className='navbar navbar-default navbar-fixed-top'>
       <div className='container'>
@@ -16,7 +21,7 @@ export const Navigation = (props) => {
             <span className='icon-bar'></span>{' '}
           </button>
           <a className='navbar-brand page-scroll' href='#page-top'>
-            React Landing Page
+            XZZ CAR RENTALS
           </a>{' '}
         </div>
 
@@ -35,7 +40,7 @@ export const Navigation = (props) => {
                 About
               </a>
             </li>
-            <li>
+            {/* <li>
               <a href='#services' className='page-scroll'>
                 Services
               </a>
@@ -44,7 +49,7 @@ export const Navigation = (props) => {
               <a href='#portfolio' className='page-scroll'>
                 Gallery
               </a>
-            </li>
+            </li> */}
             <li>
               <a href='#testimonials' className='page-scroll'>
                 Testimonials
@@ -60,6 +65,18 @@ export const Navigation = (props) => {
                 Contact
               </a>
             </li>
+
+
+            <li>
+              <span  onClick={handleClick} className='loginicon'>
+                Log in
+              </span>
+            </li>
+            {/* <li>
+              <a href='#contact' >
+                Join
+              </a>
+            </li> */}
           </ul>
         </div>
       </div>

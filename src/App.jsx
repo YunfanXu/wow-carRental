@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import { useState, useEffect } from "react";
 import { Navigation } from "./components/navigation";
 import { Header } from "./components/header";
@@ -10,6 +11,7 @@ import { Team } from "./components/Team";
 import { Contact } from "./components/contact";
 import JsonData from "./data/data.json";
 import SmoothScroll from "smooth-scroll";
+import LoginForm from './components/LoginForm';
 import "./App.css";
 
 export const scroll = new SmoothScroll('a[href*="#"]', {
@@ -23,19 +25,27 @@ const App = () => {
     setLandingPageData(JsonData);
   }, []);
 
+  const [isShowLogin, setIsShowLogin] = useState(true);
+
+  const handleLoginClick = () => {
+    setIsShowLogin((isShowLogin) => !isShowLogin);
+  };
   return (
     <div>
-      <Navigation />
-      <Header data={landingPageData.Header} />
-      <Features data={landingPageData.Features} />
-      <About data={landingPageData.About} />
-      <Services data={landingPageData.Services} />
-      <Gallery data={landingPageData.Gallery}/>
-      <Testimonials data={landingPageData.Testimonials} />
-      <Team data={landingPageData.Team} />
-      <Contact data={landingPageData.Contact} />
+      <div style={{height: '100%', overflow:'auto'}}>
+        <Navigation handleLoginClick={handleLoginClick} />
+        <Header data={landingPageData.Header} />
+        <Features data={landingPageData.Features} />
+        <About data={landingPageData.About} />
+        <Services data={landingPageData.Services} />
+        <Gallery data={landingPageData.Gallery} />
+        <Testimonials data={landingPageData.Testimonials} />
+        <Team data={landingPageData.Team} />
+        <Contact data={landingPageData.Contact} />
+      </div>
+      <LoginForm isShowLogin={isShowLogin} />
     </div>
   );
 };
 
-export default App;
+export default hot(App);
