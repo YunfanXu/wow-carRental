@@ -1,9 +1,11 @@
-export const Navigation = ({ handleLoginClick }) => {
-  const handleClick = () => {
-    console.log("clicked login")
+export const Navigation = ({ handleLoginClick, handleJoinClick }) => {
+  const handleLoginButton = () => {
     handleLoginClick();
   };
 
+  const handleJoinButton = () => {
+    handleJoinClick();
+  }
   return (
     <nav id='menu' className='navbar navbar-default navbar-fixed-top'>
       <div className='container'>
@@ -66,18 +68,18 @@ export const Navigation = ({ handleLoginClick }) => {
               </a>
             </li>
 
-
             <li>
-              <span  onClick={handleClick} className='loginicon'>
+              <div onClick={handleLoginButton} className='loginicon'>
                 Log in
-              </span>
+              </div>
             </li>
-            {/* <li>
-              <a href='#contact' >
+            <li>
+              <div onClick={handleJoinButton} className='loginicon'>
                 Join
-              </a>
-            </li> */}
+              </div>
+            </li>
           </ul>
+
         </div>
       </div>
     </nav>

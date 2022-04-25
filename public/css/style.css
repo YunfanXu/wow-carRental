@@ -229,11 +229,11 @@ a:focus,
 .intro h1 {
   font-family: "Raleway", sans-serif;
   color: #fff;
-  font-size: 82px;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-size: 62px;
+  font-weight: 500;
   margin-top: 0;
   margin-bottom: 10px;
+  letter-spacing: 2;
 }
 .intro h1 span {
   font-weight: 800;
@@ -630,12 +630,11 @@ label {
   left:0;
   top:0;
   z-index: 2;
-  background-color: rgba(0, 0, 0, 0.15);
 }
 
 
 .loginicon {
-  position: absolute;
+  padding-top: 20%;
   width: 80px;
   text-decoration: none;
   display: flex;
@@ -643,16 +642,15 @@ label {
   justify-content: center;
   font-weight: bolder;
   color: black;
-  height: 40px;
-  left: 85%;
-  top: 10px;
-  background:#2bc6ff;
   border-radius: 24px;
+  font-size: 16px;
   cursor: pointer;
+  text-align: center;
+  transition: all .2s ease-in-out; 
 }
 
 .loginicon:hover{
-  color: white;
+  transform: scale(1.2);
 }
 
 .login-form{
@@ -661,6 +659,8 @@ label {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: black
 }
 
 .form-box{
@@ -673,66 +673,13 @@ label {
   box-shadow: 10px 10px 10px 1px rgba(0, 0, 0, 0.2);
 }
 
-.login-text{
-  width: 100%;
-  color: white;
-  border-bottom: 2px solid white;
-  line-height: 30px;
-  width: 100%;
-  font-weight: bolder;
-  text-align: center;
+.centerBox{
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 5vh;
+  flex-direction: column;
 }
 
-label {
-  color:white;
-  width: 100%;
-  text-align: center;
-}
-
-.login-box{
-  border: 1px solid lightgrey;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 20px;
-  padding: 2px;
-  padding-left: 10px;
-  letter-spacing: 1px;
-  font-weight: 600;
-  margin: 5px;
-  font-size: 11pt;
-  background: transparent;
-  transition: 1s;
-  outline: none;
-}
-
-.login-btn{
-  width: 75%;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(48,172,251);
-  color: white;
-  margin-top: 5px;
-  border-radius: 20px;
-  border: none;
-  font-size: 15pt;
-  font-weight: 700;
-  transition: 1s;
-  outline: none;
-  cursor: pointer;
-  margin-bottom: 20px;
-}
-
-.login-btn:hover{
-  transform: scale(1.03);
-  letter-spacing: 4px;
-  background-color: #7FFFD4;
-  color: #1E90FF;
-}
 
 .show {
   transition: 800ms;
@@ -748,4 +695,20 @@ label {
 .show.active {
   opacity: 0;
   z-index: -1;
+}
+
+.centerBox-row{
+  display: flex;
+  justify-content: center;
+  align-items:center;
+}
+/* search bar section */
+#search-bar{
+  margin: 30px;
+  min-height: 10vh;
+  padding: 20px 0;
+  width: 100%;
+  border-radius: 10px;
+  border-bottom: 6px #ffc107 solid;
+  background-color: whitesmoke;
 }
