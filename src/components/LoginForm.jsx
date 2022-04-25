@@ -19,7 +19,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        XZZ Car Rentals
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -48,7 +48,7 @@ function LoginForm({ isShowLogin, handleLoginClick }) {
     <div onClick={handleClickBox} className={`${isShowLogin ? "active" : ""} show `}>
       <div className="login-form">
         <ThemeProvider theme={theme}>
-          <Container component="main" maxWidth="xs" style={{backgroundColor:'white', borderRadius: 20}}>
+          <Container component="main" maxWidth="xs" style={{ backgroundColor: 'white', borderRadius: 20 }}>
             <CssBaseline />
             <Box
               sx={{

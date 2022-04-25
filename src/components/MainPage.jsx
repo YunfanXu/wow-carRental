@@ -3,7 +3,7 @@ import { Header } from "./header";
 import { Features } from "./features";
 import { About } from "./about";
 import { Services } from "./services";
-import { Gallery } from "./gallery";
+import CarsGallery  from "./gallery";
 import { Testimonials } from "./testimonials";
 import { Team } from "./Team";
 import { Contact } from "./contact";
@@ -28,10 +28,10 @@ const MainPage = ({ handleJoinClick, handleLoginClick }) => {
         <div>
             <Navigation handleLoginClick={handleLoginClick} handleJoinClick={handleJoinClick} />
             <Header data={landingPageData.Header} />
+            <CarsGallery data={landingPageData.Gallery} />
             <Features data={landingPageData.Features} />
             <About data={landingPageData.About} />
             <Services data={landingPageData.Services} />
-            <Gallery data={landingPageData.Gallery} />
             <Testimonials data={landingPageData.Testimonials} />
             <Team data={landingPageData.Team} />
             <Contact data={landingPageData.Contact} />

@@ -12,13 +12,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import UserApi from '../api/user.js';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        XZZ Car Rentals
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -29,6 +30,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 const JoinForm = ({ isShowJoin, handleJoinClick }) => {
+  const api = new UserApi();
   const handleClickBox = (e) => {
     if (e.target.className === 'login-form') {
       handleJoinClick(!isShowJoin);
@@ -38,17 +40,23 @@ const JoinForm = ({ isShowJoin, handleJoinClick }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    console.log();
+    let userInfo = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+      name: data.get('firstName') + data.get('lastName'),
+      role_type: '1'
+    }
+
+    console.log("userInfo", userInfo)
+    let message = api.register(userInfo)
   };
 
   return (
     <div onClick={handleClickBox} className={`${isShowJoin ? "active" : ""} show `}>
       <div className="login-form">
         <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs" style={{backgroundColor:'white', borderRadius: 20}}>
+          <Container component="main" maxWidth="xs" style={{ backgroundColor: 'white', borderRadius: 20 }}>
             <CssBaseline />
             <Box
               sx={{
