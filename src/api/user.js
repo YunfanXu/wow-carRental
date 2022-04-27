@@ -21,21 +21,24 @@ export default class UserApi {
         const params = Object.assign({},
             this.params,
             { body: JSON.stringify(userInfo) });
-
+        let result = 400;
         try {
-            fetch(this.basePath + '/login', params)
+            result = await fetch(this.basePath + '/login', params)
                 .then(response => response.json())
                 .then(response => {
+                    console.log("response", response)
                     if (response.message === 'success') {
                         return response.data
+                    } else {
+                        return 400
                     }
-                    throw new Error('Incorrect data!')
                 }).catch(e => {
                     console.log("Error:", e.message)
                 })
         } catch (e) {
             console.log("Fetch Error:", e.message)
         }
+        return result;
     }
 
     async register(userInfo) {
@@ -43,22 +46,23 @@ export default class UserApi {
         const data = Object.assign({},
             params,
             { body: JSON.stringify(userInfo) });
-
-        console.log("data",data)
+        let result = 400;
         try {
-            fetch(this.basePath + '/register', data)
+            result = await fetch(this.basePath + '/register', data)
                 .then(response => response.json())
                 .then(response => {
                     if (response.message === 'success') {
                         return response.data
+                    } else {
+                        return 400
                     }
-                    throw new Error('Incorrect data!')
                 }).catch(e => {
                     console.log("Error:", e.message)
                 })
         } catch (e) {
             console.log("Register Error:", e.message)
         }
+        return result;
     }
 
 }

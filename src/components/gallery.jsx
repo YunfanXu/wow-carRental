@@ -1,19 +1,14 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-import CameraIcon from '@mui/icons-material/PhotoCamera';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
@@ -21,6 +16,7 @@ import GasMeterIcon from '@mui/icons-material/GasMeter';
 import HdrAutoIcon from '@mui/icons-material/HdrAuto';
 import { IconButton } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { Link } from "react-router-dom";
 
 const theme = createTheme();
 
@@ -67,10 +63,11 @@ const renderDriveModeBox = (value) => {
 const carsData = [...temp, ...temp, ...temp];
 export default function CarsGallery(props) {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme} >
       <main>
         {/* Hero unit */}
         <Box
+          id="features"
           sx={{
             bgcolor: 'background.paper',
             pt: 8,
@@ -137,7 +134,10 @@ export default function CarsGallery(props) {
                           </IconButton>
                         </Grid>
                         <Grid item xs={7} style={{ display: 'flex' }}>
-                          <Button variant="contained" size="medium">Rent Now</Button>
+                          <Link to="payment">
+                            <Button variant="contained" size="medium">Rent Now</Button>
+                          </Link>
+
                         </Grid>
 
                       </Grid>

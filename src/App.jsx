@@ -3,8 +3,13 @@ import MainPage from './components/MainPage';
 import "./App.css";
 import LoginForm from './components/LoginForm';
 import JoinForm from './components/JoinForm';
-
-import { useState } from "react";
+import Checkout from "./components/Checkout";
+import UserPage from "./components/userPage";
+import { useState, useEffect} from "react";
+import {
+  Routes,
+  Route,
+} from "react-router-dom";
 
 const App = () => {
   const [isShowLogin, setIsShowLogin] = useState(true);
@@ -19,13 +24,23 @@ const App = () => {
   const handleJoinClick = () => {
     setIsShowJoin((isShowJoin) => !isShowJoin);
   };
+
+  useEffect(() => {
+    console.log("-----")
+    localStorage.clear();
+
+  }, [])
   return (
     <div>
       <div style={{ height: '100%', overflow: 'auto' }}>
-        <MainPage handleLoginClick={handleLoginClick} handleJoinClick={handleJoinClick} />
+        <Routes>
+          <Route path="/" element={<MainPage handleLoginClick={handleLoginClick} handleJoinClick={handleJoinClick} />} />
+          <Route path="/payment" element={<Checkout />} />
+          <Route path="/user" element={<UserPage />} />
+        </Routes>
       </div>
       <LoginForm isShowLogin={isShowLogin} handleLoginClick={handleLoginClick} />
-      <JoinForm isShowJoin={isShowJoin}  handleJoinClick={handleJoinClick} />
+      <JoinForm isShowJoin={isShowJoin} handleJoinClick={handleJoinClick} />
     </div>
 
   );

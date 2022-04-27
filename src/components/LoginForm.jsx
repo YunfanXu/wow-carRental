@@ -9,11 +9,12 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import UserApi from '../api/user.js';
 
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { setToken, setUser } from '../utils/user';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -30,14 +31,35 @@ function Copyright(props) {
 const theme = createTheme();
 
 function LoginForm({ isShowLogin, handleLoginClick }) {
+  const [showError, setShowError] = React.useState(false);
+  const api = new UserApi();
 
-  const handleSubmit = (event) => {
+  const renderErrorBox = () => {
+    return (
+      <Grid item xs={12}>
+        <Typography variant="body1" component="h2" color='error'>
+          Please check your username or password!
+        </Typography>
+      </Grid>
+    )
+  }
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const userInfo = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+    };
+
+    let message = await api.login(userInfo)
+    if (message && message.token) {
+      setToken(message.token);
+      setUser(message);
+      setShowError(false);
+      handleLoginClick(false);
+    } else {
+      setShowError(true);
+    }
   };
   const handleClickBox = (e) => {
     if (e.target.className === 'login-form') {
@@ -89,6 +111,7 @@ function LoginForm({ isShowLogin, handleLoginClick }) {
                   control={<Checkbox value="remember" color="primary" />}
                   label="Remember me"
                 />
+                {showError ? renderErrorBox() : null}
                 <Button
                   type="submit"
                   fullWidth

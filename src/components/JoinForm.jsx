@@ -13,6 +13,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import UserApi from '../api/user.js';
+import InputLabel from '@mui/material/InputLabel';
+import NativeSelect from '@mui/material/NativeSelect';
+import { setToken, setUser } from '../utils/user';
 
 function Copyright(props) {
   return (
@@ -31,27 +34,276 @@ const theme = createTheme();
 
 const JoinForm = ({ isShowJoin, handleJoinClick }) => {
   const api = new UserApi();
+  const [showError, setShowError] = React.useState(false);
+
   const handleClickBox = (e) => {
     if (e.target.className === 'login-form') {
       handleJoinClick(!isShowJoin);
     }
   }
 
-  const handleSubmit = (event) => {
+  const [role_type, setRoleType] = React.useState('1');
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log();
     let userInfo = {
       email: data.get('email'),
       password: data.get('password'),
-      name: data.get('firstName') + data.get('lastName'),
-      role_type: '1'
+      fname: data.get('firstName'),
+      lname: data.get('lastName'),
+      role_type,
+      userAddress: {
+        street: data.get('address1') + data.get('address2'),
+        city: data.get('city'),
+        state: data.get('state'),
+        zipcode: data.get('zip'),
+        country: data.get('country'),
+      },
+      individual: {
+        driverLicence: data.get('driverLicence') || '',
+        insuranceCompany: data.get('insuranceCompany') || '',
+        insuranceNumber: data.get('insuranceNumber') || '',
+      },
+      corporate: {
+        companyName: data.get('companyName') || '',
+        employeeId: data.get('employeeId') || '',
+        registerCode: data.get('registerCode') || '',
+      }
+
     }
 
-    console.log("userInfo", userInfo)
-    let message = api.register(userInfo)
+    let message = await api.register(userInfo)
+    console.log("message", message)
+
+    if (message && message.token) {
+      setToken(message.token);
+      setUser(message);
+      setShowError(false);
+      handleJoinClick(false);
+    } else {
+      setShowError(true);
+    }
   };
 
+  const handleRoleType = (e) => {
+    console.log("type", e.target.value)
+    setRoleType(e.target.value);
+  }
+
+  const renderErrorBox = () => {
+    return (
+      <Grid item xs={12}>
+        <Typography variant="body1" component="h2" color='error'>
+          Please check Your Input Again!
+        </Typography>
+      </Grid>
+    )
+  }
+  const renderPersonalInfo = () => {
+    return (<>
+      <Grid item xs={12} sm={6}>
+        <TextField
+          autoComplete="given-name"
+          name="firstName"
+          required
+          fullWidth
+          id="firstName"
+          label="First Name"
+          autoFocus
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <TextField
+          required
+          fullWidth
+          id="lastName"
+          label="Last Name"
+          name="lastName"
+          autoComplete="family-name"
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          required
+          fullWidth
+          id="email"
+          label="Email Address"
+          name="email"
+          autoComplete="email"
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          required
+          fullWidth
+          name="password"
+          label="Password"
+          type="password"
+          id="password"
+          autoComplete="new-password"
+        />
+      </Grid>
+      {renderAddress()}
+      <Grid item xs={4}>
+        <InputLabel variant="standard" htmlFor="uncontrolled-native">
+          User Type
+        </InputLabel>
+      </Grid>
+      <Grid item xs={8}>
+        <NativeSelect
+          fullWidth
+          value={role_type}
+          inputProps={{
+            name: 'role_type',
+            id: 'uncontrolled-native',
+          }}
+          onChange={handleRoleType}
+        >
+          <option value={1}>Individual</option>
+          <option value={2}>Coporate Company Employee</option>
+        </NativeSelect>
+      </Grid>
+    </>)
+  }
+  const renderAddress = () => {
+    return (
+      <>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="address1"
+            name="address1"
+            label="Address line 1"
+            fullWidth
+            autoComplete="shipping address-line1"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            id="address2"
+            name="address2"
+            label="Address line 2"
+            fullWidth
+            autoComplete="shipping address-line2"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="city"
+            name="city"
+            label="City"
+            fullWidth
+            autoComplete="shipping address-level2"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            id="state"
+            name="state"
+            label="State/Province/Region"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="zip"
+            name="zip"
+            label="Zip / Postal code"
+            fullWidth
+            autoComplete="shipping postal-code"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="country"
+            name="country"
+            label="Country"
+            fullWidth
+            autoComplete="shipping country"
+            variant="standard"
+          />
+        </Grid>
+      </>
+    )
+  }
+
+  const renderIndividual = () => {
+    return (
+      <>
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
+            id="driverLicence"
+            label="Driver Licence Number"
+            name="driverLicence"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
+            id="insuranceCompany"
+            label="Insurance Company"
+            name="insuranceCompany"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
+            id="insuranceNumber"
+            label="Insurance Number"
+            name="insuranceNumber"
+          />
+        </Grid>
+      </>
+    )
+  }
+
+  const renderCorporate = () => {
+    return (
+      <>
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
+            id="companyName"
+            label="Coporatate Company Name"
+            name="companyName"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
+            id="employeeId"
+            label="Employee ID"
+            name="employeeId"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
+            id="registerCode"
+            label="Registerion Code"
+            name="registerCode"
+          />
+        </Grid>
+      </>
+    )
+  }
   return (
     <div onClick={handleClickBox} className={`${isShowJoin ? "active" : ""} show `}>
       <div className="login-form">
@@ -74,48 +326,14 @@ const JoinForm = ({ isShowJoin, handleJoinClick }) => {
               </Typography>
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="firstName"
-                      required
-                      fullWidth
-                      id="firstName"
-                      label="First Name"
-                      autoFocus
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="lastName"
-                      label="Last Name"
-                      name="lastName"
-                      autoComplete="family-name"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="email"
-                      label="Email Address"
-                      name="email"
-                      autoComplete="email"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      name="password"
-                      label="Password"
-                      type="password"
-                      id="password"
-                      autoComplete="new-password"
-                    />
-                  </Grid>
+                  {renderPersonalInfo()}
+
+                  {role_type == 1 ? (
+                    renderIndividual()
+                  ) : (
+                    renderCorporate()
+                  )}
+                  {showError ? renderErrorBox() : null}
                   <Grid item xs={12}>
                     <FormControlLabel
                       control={<Checkbox value="allowExtraEmails" color="primary" />}

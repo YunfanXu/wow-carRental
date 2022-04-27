@@ -73,6 +73,9 @@ hr {
 }
 /* Navigation */
 #menu {
+  position: sticky;
+  top:0;
+  left:0;
   padding: 15px;
   transition: all 0.8s;
 }

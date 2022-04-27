@@ -1,3 +1,7 @@
+
+import React from 'react';
+import PersonIcon from '@mui/icons-material/Person';
+
 export const Navigation = ({ handleLoginClick, handleJoinClick }) => {
   const handleLoginButton = () => {
     handleLoginClick();
@@ -5,6 +9,48 @@ export const Navigation = ({ handleLoginClick, handleJoinClick }) => {
 
   const handleJoinButton = () => {
     handleJoinClick();
+  }
+
+  const [userInfo, setUserInfo] = React.useState(null);
+
+  React.useEffect(() => {
+    let info = localStorage.getItem('user_info'); 
+    if(info){
+      setUserInfo(JSON.parse(info))
+    }
+  }, [localStorage.getItem('user_info')])
+
+  const renderLoginBox = () => {
+    return (
+      <>
+        <li>
+          <div onClick={handleLoginButton} className='loginicon'>
+            Log in
+          </div>
+        </li>
+        <li>
+          <div onClick={handleJoinButton} className='loginicon'>
+            Join
+          </div>
+        </li>
+      </>
+    )
+  }
+
+  const handleUserClick = () => {
+
+  }
+  const renderUserBox = () => {
+    return (
+      <>
+        <li>
+          <div onClick={handleUserClick} className='loginicon' style={{justifyContent:'space-around'}} >
+            <PersonIcon sx={{fontSize: '20px'}} />
+            {userInfo.lname}
+          </div>
+        </li>
+      </>
+    )
   }
   return (
     <nav id='menu' className='navbar navbar-default navbar-fixed-top'>
@@ -68,16 +114,7 @@ export const Navigation = ({ handleLoginClick, handleJoinClick }) => {
               </a>
             </li>
 
-            <li>
-              <div onClick={handleLoginButton} className='loginicon'>
-                Log in
-              </div>
-            </li>
-            <li>
-              <div onClick={handleJoinButton} className='loginicon'>
-                Join
-              </div>
-            </li>
+            {userInfo ? renderUserBox() : renderLoginBox()}
           </ul>
 
         </div>
