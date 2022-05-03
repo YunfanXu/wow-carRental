@@ -652,6 +652,12 @@ label {
   transition: all .2s ease-in-out; 
 }
 
+.login-textBox{
+  padding-top: 12% !important;
+  padding-top: 0;
+  font-weight: 600;
+  font-size: 28px;
+}
 .loginicon:hover{
   transform: scale(1.2);
 }

@@ -8,8 +8,9 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
 export default function SearchBar() {
-    const [pickupTime, setPickupTime] = React.useState(new Date());
-    const [dropOffTime, setdropOffTime] = React.useState(new Date());
+    const today = new Date();
+    const [pickupTime, setPickupTime] = React.useState((new Date()).setDate(today.getDate() + 1));
+    const [dropOffTime, setdropOffTime] = React.useState((new Date()).setDate(today.getDate() + 2));
     const [pickUpLocation, setpickUpLocation] = React.useState('');
     const [dropOffLocation, setdropOffLocation] = React.useState('');
 

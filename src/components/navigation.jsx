@@ -1,6 +1,8 @@
 
 import React from 'react';
 import PersonIcon from '@mui/icons-material/Person';
+import UserDropdown from './UserDropdown';
+import { removeToken, removeUser } from '../utils/user';
 
 export const Navigation = ({ handleLoginClick, handleJoinClick }) => {
   const handleLoginButton = () => {
@@ -14,8 +16,10 @@ export const Navigation = ({ handleLoginClick, handleJoinClick }) => {
   const [userInfo, setUserInfo] = React.useState(null);
 
   React.useEffect(() => {
-    let info = localStorage.getItem('user_info'); 
-    if(info){
+    let info = localStorage.getItem('user_info');
+    console.log("info", info);
+
+    if (info) {
       setUserInfo(JSON.parse(info))
     }
   }, [localStorage.getItem('user_info')])
@@ -37,17 +41,17 @@ export const Navigation = ({ handleLoginClick, handleJoinClick }) => {
     )
   }
 
-  const handleUserClick = () => {
-
+  const handleLogout = () => {
+    setUserInfo(null);
+    removeToken();
+    removeUser();
   }
+
   const renderUserBox = () => {
     return (
       <>
         <li>
-          <div onClick={handleUserClick} className='loginicon' style={{justifyContent:'space-around'}} >
-            <PersonIcon sx={{fontSize: '20px'}} />
-            {userInfo.lname}
-          </div>
+          <UserDropdown userName={userInfo.fname} handleLogout={handleLogout}/>
         </li>
       </>
     )

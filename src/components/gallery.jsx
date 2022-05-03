@@ -17,19 +17,9 @@ import HdrAutoIcon from '@mui/icons-material/HdrAuto';
 import { IconButton } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Link } from "react-router-dom";
+import carApi from '../api/car';
 
 const theme = createTheme();
-
-const temp = [{
-  name: 'BMW 3 Series',
-  year: 1993,
-  img: '',
-  seats: 4,
-  powerMode: 'Gasoline',
-  mpg: 5.5,
-  driveMode: 'Automatic',
-  pricePerMonth: 500
-}];
 
 const createIconTextBox = (icon, text) => {
   return (
@@ -60,8 +50,16 @@ const renderDriveModeBox = (value) => {
   return createIconTextBox(<HdrAutoIcon color="primary" sx={{ fontSize: 20 }} />, value);
 }
 
-const carsData = [...temp, ...temp, ...temp];
 export default function CarsGallery(props) {
+  const api = new carApi();
+  const [carsData, setCarsData] = React.useState([]);
+  React.useEffect(async () => {
+    let carInfo = await api.getCarList();
+    console.log("carInfo", carInfo)
+    if (Array.isArray(carInfo)) {
+      setCarsData(carInfo.filter(car => car.image_url));
+    }
+  }, [])
   return (
     <ThemeProvider theme={theme} >
       <main>
@@ -90,12 +88,10 @@ export default function CarsGallery(props) {
                 >
                   <CardMedia
                     component="img"
-                    sx={{
-                      // 16:9
-                      pt: '25.25%',
-                    }}
-                    image={car.img || "https://source.unsplash.com/random"}
-                    alt="random"
+                    height="340"
+                    style={{ objectFit: 'contain' }}
+                    image={car.image_url || "https://source.unsplash.com/random"}
+                    alt={car.name}
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Grid container >
@@ -113,7 +109,6 @@ export default function CarsGallery(props) {
                       <Grid item container xs={6}>{renderGasBox(car.powerMode)}</Grid>
                       <Grid item container xs={6}>{renderOrilBox(car.mpg)}</Grid>
                       <Grid item container xs={6}>{renderDriveModeBox(car.driveMode)}</Grid>
-
                     </Grid>
                   </CardContent>
                   <CardActions>
@@ -124,7 +119,7 @@ export default function CarsGallery(props) {
                       alignItems="center">
                       <Grid item xs={6}>
                         <Typography gutterBottom variant="h5" component="h2">
-                          ${car.pricePerMonth} / month
+                          ${car.pricePerDay} / Day
                         </Typography>
                       </Grid>
                       <Grid item container xs={6}>

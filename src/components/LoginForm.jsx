@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -10,6 +9,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import UserApi from '../api/user.js';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -33,6 +33,7 @@ const theme = createTheme();
 function LoginForm({ isShowLogin, handleLoginClick }) {
   const [showError, setShowError] = React.useState(false);
   const api = new UserApi();
+  const [loading, setLoading] = React.useState(false);
 
   const renderErrorBox = () => {
     return (
@@ -43,23 +44,32 @@ function LoginForm({ isShowLogin, handleLoginClick }) {
       </Grid>
     )
   }
+  const getUserInfo = async () => {
+    let userInfo = await api.getUserInfo();
+    return userInfo;
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     const data = new FormData(event.currentTarget);
     const userInfo = {
       email: data.get('email'),
       password: data.get('password'),
     };
 
-    let message = await api.login(userInfo)
+    let message = await api.login(userInfo);
     if (message && message.token) {
       setToken(message.token);
-      setUser(message);
+
+      let basicUserInfo = await getUserInfo();
+      setUser({ ...message, ...basicUserInfo });
       setShowError(false);
       handleLoginClick(false);
     } else {
       setShowError(true);
     }
+    setLoading(false);
   };
   const handleClickBox = (e) => {
     if (e.target.className === 'login-form') {
@@ -112,14 +122,15 @@ function LoginForm({ isShowLogin, handleLoginClick }) {
                   label="Remember me"
                 />
                 {showError ? renderErrorBox() : null}
-                <Button
+                <LoadingButton
                   type="submit"
                   fullWidth
                   variant="contained"
+                  loading={loading}
                   sx={{ mt: 3, mb: 2 }}
                 >
                   Sign In
-                </Button>
+                </LoadingButton>
                 <Grid container>
                   <Grid item xs>
                     <Link href="#" variant="body2">
