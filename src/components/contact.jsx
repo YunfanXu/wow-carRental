@@ -17,14 +17,12 @@ export const Contact = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(name, email, message)
     emailjs
       .sendForm(
         'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', e.target, 'YOUR_USER_ID'
       )
       .then(
         (result) => {
-          console.log(result.text)
           clearState()
         },
         (error) => {

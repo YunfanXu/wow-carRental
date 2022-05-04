@@ -3,7 +3,7 @@ import { Header } from "../components/header";
 import { Features } from "../components/features";
 import { About } from "../components/about";
 import { Services } from "../components/services";
-import CarsGallery  from "../components/gallery";
+import CarsGallery from "../components/gallery";
 import { Testimonials } from "../components/testimonials";
 import { Team } from "../components/Team";
 import { Contact } from "../components/contact";
@@ -19,6 +19,11 @@ export const scroll = new SmoothScroll('a[href*="#"]', {
 
 const MainPage = ({ handleJoinClick, handleLoginClick }) => {
     const [landingPageData, setLandingPageData] = useState({});
+    const [searchData, setSearchData] = useState(null);
+
+    const handleSearchData = (data) => {
+        setSearchData(data);
+    }
     useEffect(() => {
         setLandingPageData(JsonData);
     }, []);
@@ -27,8 +32,8 @@ const MainPage = ({ handleJoinClick, handleLoginClick }) => {
     return (
         <div>
             <Navigation handleLoginClick={handleLoginClick} handleJoinClick={handleJoinClick} />
-            <Header data={landingPageData.Header} />
-            <CarsGallery data={landingPageData.Gallery} />
+            <Header data={landingPageData.Header} searchData={searchData} handleSearchData={handleSearchData} />
+            <CarsGallery data={landingPageData.Gallery} searchData={searchData} />
             <Features data={landingPageData.Features} />
             <About data={landingPageData.About} />
             <Services data={landingPageData.Services} />

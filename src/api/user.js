@@ -3,8 +3,8 @@ export default class UserApi {
 
     constructor() {
         var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        myHeaders.set("Content-Type", "application/json");
+        myHeaders.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
 
         this.basePath = 'http://67.207.80.139:8080';
@@ -68,7 +68,7 @@ export default class UserApi {
     async updateAddress(address) {
         const params = { ...this.params };
         const { id, token } = getUserInfo();
-        params.headers.append("Authorization", token);
+        params.headers.set("Authorization", token);
         params.method = 'PUT';
         const data = Object.assign({},
             params,
@@ -95,7 +95,7 @@ export default class UserApi {
     async updateIndividual(individual) {
         const params = { ...this.params };
         const { id, token } = getUserInfo();
-        params.headers.append("Authorization", token);
+        params.headers.set("Authorization", token);
         params.method = 'PUT';
         const data = Object.assign({},
             params,
@@ -103,7 +103,7 @@ export default class UserApi {
         let result = 400;
         try {
             result = await fetch(this.basePath + '/api/individual/' + id, data)
-                .then(response => response.json())
+                .then(response => response.text())
                 .then(response => {
                     console.log("updateIndividual", response)
                     if (response.code === 200) {
@@ -124,7 +124,7 @@ export default class UserApi {
     async getUserInfo() {
         const params = { ...this.params };
         const token = getUserToken();
-        params.headers.append("Authorization", token);
+        params.headers.set("Authorization", token);
         params.method = 'GET';
         const data = Object.assign({}, params);
         let result = 400;
@@ -149,7 +149,7 @@ export default class UserApi {
     async getCoupon() {
         const params = { ...this.params };
         const { id, token } = getUserInfo();
-        params.headers.append("Authorization", token);
+        params.headers.set("Authorization", token);
         params.method = 'GET';
         const data = Object.assign({}, params);
         let result = 400;

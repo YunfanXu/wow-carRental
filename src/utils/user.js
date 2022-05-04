@@ -1,5 +1,6 @@
 const USER_INFO = 'user_info';
 const USER_TOKEN = 'user_token';
+const SEARCH_INFO = 'SEARCH_INFO';
 
 export function setToken(token) {
     return localStorage.setItem(USER_TOKEN, JSON.stringify(token));
@@ -25,5 +26,16 @@ export function getUserInfo() {
 
 export function getUserToken() {
     return JSON.parse(localStorage.getItem(USER_TOKEN));
+}
+export function setSearchInfo(data) {
+    return localStorage.setItem(SEARCH_INFO, JSON.stringify(data));
+}
 
+export function getSearchInfo() {
+    return JSON.parse(localStorage.getItem(SEARCH_INFO));
+}
+
+export function removeSearchInfo() {
+    localStorage.removeItem(SEARCH_INFO);
+    return;
 }

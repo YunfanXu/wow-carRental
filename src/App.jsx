@@ -26,9 +26,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log("-----")
     localStorage.clear();
-
   }, [])
   return (
     <div>

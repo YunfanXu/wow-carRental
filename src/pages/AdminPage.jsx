@@ -45,7 +45,6 @@ export default function Admin() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log();
         let userInfo = {
             userAddress: {
                 street: data.get('address1') + data.get('address2'),
@@ -60,19 +59,16 @@ export default function Admin() {
                 insuranceNumber: data.get('insuranceNumber') || '',
             }
         }
-        console.log("userInfo", userInfo)
 
         let message = await api.updateAddress(userInfo.userAddress)
 
         if (message) {
-            console.log("!!!!", message)
             setShowError(false);
         } else {
             setShowError(true);
         }
     };
 
-    console.log('userInfo', userInfo);
     return (
         <ThemeProvider theme={theme}>
             <div style={{ height: '100vh', overflow: 'hidden' }}>

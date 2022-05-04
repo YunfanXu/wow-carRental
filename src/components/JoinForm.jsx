@@ -48,7 +48,6 @@ const JoinForm = ({ isShowJoin, handleJoinClick }) => {
     setLoading(true);
 
     const data = new FormData(event.currentTarget);
-    console.log();
     let userInfo = {
       email: data.get('email'),
       password: data.get('password'),
@@ -72,9 +71,7 @@ const JoinForm = ({ isShowJoin, handleJoinClick }) => {
         employeeId: data.get('employeeId') || '',
         registerCode: data.get('registerCode') || '',
       }
-
     }
-    console.log("userInfo", userInfo)
 
     let message = await api.register(userInfo)
 
@@ -91,7 +88,6 @@ const JoinForm = ({ isShowJoin, handleJoinClick }) => {
   };
 
   const handleRoleType = (e) => {
-    console.log("type", e.target.value)
     setRoleType(e.target.value);
   }
 
@@ -119,7 +115,7 @@ const JoinForm = ({ isShowJoin, handleJoinClick }) => {
               <Box component="form" Validate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
                   <RenderPersonalInfo role_type={role_type} handleRoleType={handleRoleType} />
-                  {role_type == 1 ? <RenderIndividual /> : <RenderCorporate />}
+                  {parseInt(role_type) === 1 ? <RenderIndividual /> : <RenderCorporate />}
                   {showError ? <RenderErrorBox /> : null}
                   <Grid item xs={12}>
                     <FormControlLabel

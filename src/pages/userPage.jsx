@@ -37,7 +37,6 @@ export default function User() {
         event.preventDefault();
         setLoading(true);
         const data = new FormData(event.currentTarget);
-        console.log();
         let userInfo = {
             userAddress: {
                 street: data.get('address1') + '\n' + data.get('address2'),
@@ -52,8 +51,6 @@ export default function User() {
                 insuranceNumber: data.get('insuranceNumber') || '',
             }
         }
-        console.log("userInfo", userInfo)
-
         let message1 = await api.updateAddress(userInfo.userAddress)
         let message2 = await api.updateIndividual(userInfo.individual)
 

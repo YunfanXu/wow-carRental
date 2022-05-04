@@ -1,5 +1,4 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -16,11 +15,20 @@ import GasMeterIcon from '@mui/icons-material/GasMeter';
 import HdrAutoIcon from '@mui/icons-material/HdrAuto';
 import { IconButton } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { Link } from "react-router-dom";
 import carApi from '../api/car';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Snackbar from '@mui/material/Snackbar';
+import { getUserInfo } from '../utils/user';
+import { useNavigate } from "react-router-dom";
+import MuiAlert from '@mui/material/Alert';
 
 const theme = createTheme();
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 const createIconTextBox = (icon, text) => {
   return (
     <>
@@ -50,19 +58,117 @@ const renderDriveModeBox = (value) => {
   return createIconTextBox(<HdrAutoIcon color="primary" sx={{ fontSize: 20 }} />, value);
 }
 
-export default function CarsGallery(props) {
+export default function CarsGallery({ searchData }) {
   const api = new carApi();
   const [carsData, setCarsData] = React.useState([]);
-  React.useEffect(async () => {
-    let carInfo = await api.getCarList();
-    console.log("carInfo", carInfo)
-    if (Array.isArray(carInfo)) {
-      setCarsData(carInfo.filter(car => car.image_url));
+  const [renderData, setRenderData] = React.useState([]);
+  const [sortVal, setSortVal] = React.useState('');
+  const [openSnack, setOpenSnack] = React.useState({
+    open: false,
+    message: ''
+  });
+
+  let navigate = useNavigate();
+
+
+  let carList = [];
+
+  const handleClose = () => {
+    setOpenSnack({ ...openSnack, open: false });
+  };
+
+  const handleSortChange = (e) => {
+    let type = e.target.value;
+    setSortVal(type);
+    if (type === 'Year') {
+      sortByYear();
+    } else if (type === 'Price') {
+      sortByPrice();
+    }
+  }
+
+  const sortByPrice = (isAsc = true) => {
+    setRenderData(renderData.sort((a, b) => {
+      if (isAsc) {
+        return Number(a.pricePerDay) - Number(b.pricePerDay);
+      }
+      return Number(b.pricePerDay) - Number(a.pricePerDay)
+    }));
+  }
+
+  const sortByYear = (isAsc = false) => {
+    setRenderData(renderData.sort((a, b) => {
+      if (isAsc) {
+        return Number(a.year) - Number(b.year);
+      }
+      return Number(b.year) - Number(a.year)
+    }));
+  }
+
+  const filterByType = (type) => {
+    if (type === 'All') {
+      setRenderData(carsData);
+    } else {
+      setRenderData(carsData.filter(car => car.class_type === type));
+    }
+  }
+
+  const fetchCarlist = async () => {
+    carList = await api.getCarList();
+    if (Array.isArray(carList)) {
+      setCarsData(carList.filter(car => car.image_url));
+      setRenderData(carList.filter(car => car.image_url));
+    }
+  }
+
+  React.useEffect(() => {
+    if (carList.length === 0) {
+      fetchCarlist();
     }
   }, [])
+
+  React.useEffect(() => {
+    if (searchData && searchData.class_type) {
+      filterByType(searchData.class_type)
+    }
+  }, [searchData])
+
+  const handleRent = (car) => {
+    let userInfo = getUserInfo();
+    console.log('----searchData', searchData)
+    if (!userInfo || !userInfo.token) {
+      setOpenSnack({
+        open: true,
+        message: 'Please Login First!'
+      });
+    } else if (!searchData) {
+      setOpenSnack({
+        open: true,
+        message: 'Please Fill in the Search bar!'
+      });
+    } else {
+      navigate('/payment', {
+        state: {
+          carInfo: { ...car },
+          searchData
+        }
+      })
+    }
+  }
+
   return (
     <ThemeProvider theme={theme} >
       <main>
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={openSnack.open}
+          onClose={handleClose}
+          autoHideDuration={3000}
+        >
+          <Alert onClose={handleClose} severity="error" sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+            {openSnack.message}
+          </Alert>
+        </Snackbar>
         {/* Hero unit */}
         <Box
           id="features"
@@ -80,8 +186,30 @@ export default function CarsGallery(props) {
         </Box>
         <Container sx={{ py: 8 }} maxWidth="xl">
           {/* End hero unit */}
+          <Grid container >
+            <Grid item xs={6} md={4} container alignItems='center'>
+              <Typography variant="h6" display="block" gutterBottom>
+                SORT BY:
+              </Typography>
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <Select
+                  value={sortVal}
+                  onChange={handleSortChange}
+                  displayEmpty
+                  inputProps={{ 'aria-label': 'Without label' }}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={'Price'}>Price</MenuItem>
+                  <MenuItem value={'Year'}>Year</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+
+          </Grid>
           <Grid container spacing={2}>
-            {carsData.map((car, index) => (
+            {renderData.map((car, index) => (
               <Grid item key={car.name + index} xs={12} sm={6} md={4}>
                 <Card
                   sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
@@ -105,7 +233,7 @@ export default function CarsGallery(props) {
                           {car.year}
                         </Typography>
                       </Grid>
-                      <Grid item container xs={6}>{renderSeatBox(car.seats)}</Grid>
+                      <Grid item container xs={6}>{renderSeatBox(car.seat)}</Grid>
                       <Grid item container xs={6}>{renderGasBox(car.powerMode)}</Grid>
                       <Grid item container xs={6}>{renderOrilBox(car.mpg)}</Grid>
                       <Grid item container xs={6}>{renderDriveModeBox(car.driveMode)}</Grid>
@@ -129,10 +257,7 @@ export default function CarsGallery(props) {
                           </IconButton>
                         </Grid>
                         <Grid item xs={7} style={{ display: 'flex' }}>
-                          <Link to="payment">
-                            <Button variant="contained" size="medium">Rent Now</Button>
-                          </Link>
-
+                          <Button variant="contained" size="medium" onClick={() => handleRent(car)}>Rent Now</Button>
                         </Grid>
 
                       </Grid>

@@ -21,11 +21,10 @@ export default class UserApi {
         const data = Object.assign({}, params);
         let result = 400;
         try {
-            result = await fetch(this.basePath + '/api/carInfo/entire', data)
+            result = await fetch(this.basePath + '/api/carInfo/valid', data)
                 .then(response => response.json())
                 .then(response => {
-                    console.log("getcarlist", response)
-                    if (response.code == 200 || response.message === 'success') {
+                    if (response.code === 200 || response.message === 'success') {
                         return response.data
                     } else {
                         return 400

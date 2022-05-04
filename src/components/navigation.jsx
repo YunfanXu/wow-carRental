@@ -17,8 +17,6 @@ export const Navigation = ({ handleLoginClick, handleJoinClick }) => {
 
   React.useEffect(() => {
     let info = localStorage.getItem('user_info');
-    console.log("info", info);
-
     if (info) {
       setUserInfo(JSON.parse(info))
     }
@@ -84,7 +82,7 @@ export const Navigation = ({ handleLoginClick, handleJoinClick }) => {
           <ul className='nav navbar-nav navbar-right'>
             <li>
               <a href='#features' className='page-scroll'>
-                Features
+                Cars
               </a>
             </li>
             <li>
