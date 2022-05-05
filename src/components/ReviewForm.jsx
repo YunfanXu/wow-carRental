@@ -175,9 +175,9 @@ export default function Review({ orderInfo, couponId, handleChange }) {
       <Title gutterBottom>
         Order summary
       </Title>
-      <List disablePadding>
+      <Grid container sx={{flexGrow:1, padding: '30px 0'}} >
         {renderCarInfo(orderInfo.carInfo)}
-      </List>
+      </Grid>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <Title gutterBottom sx={{ mt: 2 }}>

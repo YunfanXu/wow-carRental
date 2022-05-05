@@ -20,6 +20,9 @@ import { RenderIndividual, RenderErrorBox, RenderAddress } from '../modules/User
 import UserApi from '../api/user.js';
 import { getUserInfo, setUser } from '../utils/user';
 import CouponList from '../components/CouponList';
+import HistoryIcon from '@mui/icons-material/History';
+import OrderList from '../components/OrderList';
+
 const theme = createTheme();
 
 const renderIconTitle = (text, icon) => {
@@ -81,10 +84,9 @@ export default function User() {
         setLoading(false);
     };
 
-    return (
-        <ThemeProvider theme={theme}>
-            <div style={{ overflow: 'auto' }}>
-                <CssBaseline />
+    const RenderTopBar = () => {
+        return (
+            <>
                 <AppBar
                     position="absolute"
                     color="default"
@@ -112,75 +114,114 @@ export default function User() {
                         </Box>
                     </Toolbar>
                 </AppBar>
+            </>
+        )
+    }
+
+    const RenderCouponList = () => {
+        return (
+            <Box
+                sx={{
+                    my: 8,
+                    mx: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    flexGrow: 1
+                }}
+            >
+                {renderIconTitle('Coupons', <CardGiftcardIcon />)}
+                <CouponList />
+            </Box>
+        )
+    }
+
+    const RenderPersonalInfo = () => {
+        return (
+            <>
+                <Box
+                    sx={{
+                        my: 8,
+                        mx: 4,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    {renderIconTitle('Account', <PersonIcon />)}
+                    <Box component="form" Validate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                        <Grid container spacing={3}>
+                            <RenderAddress isEditable={isEditable} />
+                            <RenderIndividual isEditable={isEditable} />
+
+                            {showError ? <RenderErrorBox isEditable={isEditable} /> : null}
+                        </Grid>
+                        <Grid container justifyContent='space-around'>
+                            <Grid item >
+                                <Button
+                                    size='large'
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2 }}
+                                    onClick={handleClickEditable}
+                                >
+                                    {isEditable ? 'Cancel' : 'Edit'}
+                                </Button>
+                            </Grid>
+
+                            {isEditable ? <Grid item >
+                                <LoadingButton
+                                    size='large'
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    loading={loading}
+                                    sx={{ mt: 3, mb: 2 }}
+                                >
+                                    Submit
+                                </LoadingButton>
+                            </Grid> : null}
+                        </Grid>
+                    </Box>
+                </Box>
+            </>
+        )
+    }
+
+    const RenderOrder = () => {
+        return (
+            <Box
+                sx={{
+                    my: 8,
+                    mx: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    flexGrow: 1
+                }}
+            >
+                {renderIconTitle('Coupons', <HistoryIcon />)}
+                <OrderList />
+            </Box>
+        )
+    }
+    return (
+        <ThemeProvider theme={theme}>
+            <div style={{ overflow: 'auto' }}>
+                <CssBaseline />
+                <RenderTopBar />
 
                 <Grid container component="main" sx={{ flexGrow: 1 }}>
                     <Grid item xs={12} container justifyContent='center' sx={{ padding: '30px 15vw' }}>
-
                         <Grid item container xs={12} component={Paper} elevation={6} square>
-                            <Box
-                                sx={{
-                                    my: 8,
-                                    mx: 4,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                {renderIconTitle('Account', <PersonIcon />)}
-                                <Box component="form" Validate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                                    <Grid container spacing={3}>
-                                        <RenderAddress isEditable={isEditable} />
-                                        <RenderIndividual isEditable={isEditable} />
-
-                                        {showError ? <RenderErrorBox isEditable={isEditable} /> : null}
-                                    </Grid>
-                                    <Grid container justifyContent='space-around'>
-                                        <Grid item >
-                                            <Button
-                                                size='large'
-                                                fullWidth
-                                                variant="contained"
-                                                sx={{ mt: 3, mb: 2 }}
-                                                onClick={handleClickEditable}
-                                            >
-                                                {isEditable ? 'Cancel' : 'Edit'}
-                                            </Button>
-                                        </Grid>
-
-                                        {isEditable ? <Grid item >
-                                            <LoadingButton
-                                                size='large'
-                                                type="submit"
-                                                fullWidth
-                                                variant="contained"
-                                                loading={loading}
-                                                sx={{ mt: 3, mb: 2 }}
-                                            >
-                                                Submit
-                                            </LoadingButton>
-                                        </Grid> : null}
-                                    </Grid>
-                                </Box>
-                            </Box>
+                            <RenderPersonalInfo />
                         </Grid>
                         <Grid item container xs={12} component={Paper} elevation={6} square>
-                            <Box
-                                sx={{
-                                    my: 8,
-                                    mx: 4,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    flexGrow: 1
-                                }}
-                            >
-                                {renderIconTitle('Coupons', <CardGiftcardIcon />)}
-                                <CouponList />
-                            </Box>
+                            <RenderCouponList />
                         </Grid>
-                    </Grid>
-                    <Grid item container xs={12} component={Paper} elevation={6} square >
-
+                        <Grid item container xs={12} component={Paper} elevation={6} square>
+                            <RenderOrder />
+                        </Grid>
                     </Grid>
                 </Grid>
             </div>

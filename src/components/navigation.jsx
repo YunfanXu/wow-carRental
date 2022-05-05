@@ -55,7 +55,7 @@ export const Navigation = ({ handleLoginClick, handleJoinClick }) => {
     )
   }
   return (
-    <nav id='menu' className='navbar navbar-default navbar-fixed-top'>
+    <nav id='menu' className='navbar navbar-default navbar-fixed-top' style={{margin: 0}}>
       <div className='container'>
         <div className='navbar-header'>
           <button

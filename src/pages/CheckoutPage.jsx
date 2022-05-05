@@ -47,18 +47,25 @@ const theme = createTheme();
 const createOrderData = (orderInfo, couponId) => {
     const userInfo = getUserInfo();
     let data = {
-        "couponId": couponId,
+        "couponId": couponId || 0,
         "dailyLimitOdometer": orderInfo.carInfo.limitMilePerDay,
         "dropDate": orderInfo.searchData.dropOffTime,
-        "dropLocId": 1,
+        "dropLocId": orderInfo.searchData.dropOffLocation,
         "pickDate": orderInfo.searchData.pickupTime,
-        "pickLocId": 2,
+        "pickLocId": orderInfo.searchData.pickUpLocation,
         "userId": userInfo.id,
         "vinId": orderInfo.carInfo.vin_id,
         "endOdometer": 0,
         "startOdometer": 0
 
     }
+
+    console.log("orderInfo",orderInfo)
+
+    if(data.couponId === 0){
+        delete data.couponId;
+    }
+    console.log("data",data)
 
     return data;
 }
