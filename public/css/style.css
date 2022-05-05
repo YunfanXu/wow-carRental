@@ -691,6 +691,7 @@ label {
 
 
 .show {
+  display: block;
   transition: 800ms;
   position: absolute;
   top:0;
@@ -701,7 +702,11 @@ label {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
+.isHidden{
+  display: none;
+}
 .show.active {
+  display: none;
   opacity: 0;
   z-index: -1;
 }

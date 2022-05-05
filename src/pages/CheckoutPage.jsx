@@ -48,7 +48,7 @@ const createOrderData = (orderInfo, couponId) => {
     const userInfo = getUserInfo();
     let data = {
         "couponId": couponId,
-        "dailyLimitOdometer": 0,
+        "dailyLimitOdometer": orderInfo.carInfo.limitMilePerDay,
         "dropDate": orderInfo.searchData.dropOffTime,
         "dropLocId": 1,
         "pickDate": orderInfo.searchData.pickupTime,

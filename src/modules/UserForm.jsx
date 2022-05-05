@@ -212,6 +212,15 @@ export const RenderPersonalInfo = ({ role_type, handleRoleType }) => {
             <TextField
                 required
                 fullWidth
+                label="Phone Number"
+                name="phoneNum"
+                autoComplete="tel"
+            />
+        </Grid>
+        <Grid item xs={12}>
+            <TextField
+                required
+                fullWidth
                 name="password"
                 label="Password"
                 type="password"

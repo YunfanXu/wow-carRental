@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PersonIcon from '@mui/icons-material/Person';
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import {
     useNavigate,
 } from "react-router-dom";
@@ -18,8 +19,21 @@ import Avatar from '@mui/material/Avatar';
 import { RenderIndividual, RenderErrorBox, RenderAddress } from '../modules/UserForm';
 import UserApi from '../api/user.js';
 import { getUserInfo, setUser } from '../utils/user';
+import CouponList from '../components/CouponList';
 const theme = createTheme();
 
+const renderIconTitle = (text, icon) => {
+    return (
+        <>
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                {icon}
+            </Avatar>
+            <Typography component="h1" variant="h5">
+                {text}
+            </Typography>
+        </>
+    )
+}
 export default function User() {
     const navigate = new useNavigate();
     const api = new UserApi();
@@ -69,8 +83,7 @@ export default function User() {
 
     return (
         <ThemeProvider theme={theme}>
-            <div style={{ height: '100vh', overflow: 'hidden' }}>
-
+            <div style={{ overflow: 'auto' }}>
                 <CssBaseline />
                 <AppBar
                     position="absolute"
@@ -101,75 +114,72 @@ export default function User() {
                 </AppBar>
 
                 <Grid container component="main" sx={{ flexGrow: 1 }}>
-                    <CssBaseline />
-                    <Grid
-                        item
-                        xs={false}
-                        sm={4}
-                        md={6}
-                        sx={{
-                            backgroundImage: 'url(https://source.unsplash.com/random)',
-                            backgroundRepeat: 'no-repeat',
-                            backgroundColor: (t) =>
-                                t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                        }}
-                    />
-                    <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square>
-                        <Box
-                            sx={{
-                                my: 8,
-                                mx: 4,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                                <PersonIcon />
-                            </Avatar>
-                            <Typography component="h1" variant="h5">
-                                Account
-                            </Typography>
-                            <Box>
+                    <Grid item xs={12} container justifyContent='center' sx={{ padding: '30px 15vw' }}>
 
-                            </Box>
-                            <Box component="form" Validate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                                <Grid container spacing={3}>
-                                    <RenderAddress isEditable={isEditable} />
-                                    <RenderIndividual isEditable={isEditable} />
+                        <Grid item container xs={12} component={Paper} elevation={6} square>
+                            <Box
+                                sx={{
+                                    my: 8,
+                                    mx: 4,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                {renderIconTitle('Account', <PersonIcon />)}
+                                <Box component="form" Validate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                                    <Grid container spacing={3}>
+                                        <RenderAddress isEditable={isEditable} />
+                                        <RenderIndividual isEditable={isEditable} />
 
-                                    {showError ? <RenderErrorBox isEditable={isEditable} /> : null}
-                                </Grid>
-                                <Grid container justifyContent='space-around'>
-                                    <Grid item >
-                                        <Button
-                                            size='large'
-                                            fullWidth
-                                            variant="contained"
-                                            sx={{ mt: 3, mb: 2 }}
-                                            onClick={handleClickEditable}
-                                        >
-                                            {isEditable ? 'Cancel' : 'Edit'}
-                                        </Button>
+                                        {showError ? <RenderErrorBox isEditable={isEditable} /> : null}
                                     </Grid>
+                                    <Grid container justifyContent='space-around'>
+                                        <Grid item >
+                                            <Button
+                                                size='large'
+                                                fullWidth
+                                                variant="contained"
+                                                sx={{ mt: 3, mb: 2 }}
+                                                onClick={handleClickEditable}
+                                            >
+                                                {isEditable ? 'Cancel' : 'Edit'}
+                                            </Button>
+                                        </Grid>
 
-                                    {isEditable ? <Grid item >
-                                        <LoadingButton
-                                            size='large'
-                                            type="submit"
-                                            fullWidth
-                                            variant="contained"
-                                            loading={loading}
-                                            sx={{ mt: 3, mb: 2 }}
-                                        >
-                                            Submit
-                                        </LoadingButton>
-                                    </Grid> : null}
-                                </Grid>
+                                        {isEditable ? <Grid item >
+                                            <LoadingButton
+                                                size='large'
+                                                type="submit"
+                                                fullWidth
+                                                variant="contained"
+                                                loading={loading}
+                                                sx={{ mt: 3, mb: 2 }}
+                                            >
+                                                Submit
+                                            </LoadingButton>
+                                        </Grid> : null}
+                                    </Grid>
+                                </Box>
                             </Box>
-                        </Box>
+                        </Grid>
+                        <Grid item container xs={12} component={Paper} elevation={6} square>
+                            <Box
+                                sx={{
+                                    my: 8,
+                                    mx: 4,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    flexGrow: 1
+                                }}
+                            >
+                                {renderIconTitle('Coupons', <CardGiftcardIcon />)}
+                                <CouponList />
+                            </Box>
+                        </Grid>
+                    </Grid>
+                    <Grid item container xs={12} component={Paper} elevation={6} square >
 
                     </Grid>
                 </Grid>

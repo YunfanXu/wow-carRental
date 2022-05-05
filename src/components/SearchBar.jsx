@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Box from '@mui/material/Box';
+import carAPI from '../api/car';
 
 const CAR_CLASSES = ["All", "Station Wagon", "Sports Car", "Large Car", "Luxury Car", "Mid-size Car", "Small Car", "Pickup Truck", "Mini Van", "Commercial", "Premium SUV"]
 export default function SearchBar({ handleSearchData, searchData }) {
@@ -21,7 +22,8 @@ export default function SearchBar({ handleSearchData, searchData }) {
     const [pickUpLocation, setpickUpLocation] = React.useState('');
     const [dropOffLocation, setdropOffLocation] = React.useState('');
     const [class_type, setclass_type] = React.useState('All');
-
+    const [officeList, setOfficeList] = React.useState([]);
+    const api = new carAPI();
     const handlePickUpChange = (newValue) => {
         setPickupTime(newValue);
     };
@@ -62,6 +64,18 @@ export default function SearchBar({ handleSearchData, searchData }) {
     const handleSelect = (e) => {
         setclass_type(e.target.value)
     }
+
+    const getLocations = async () => {
+        let response = await api.getOffices();
+        if (response !== 400) {
+            setOfficeList(response);
+        }
+        return;
+    }
+
+    React.useEffect(() => {
+        getLocations()
+    }, [])
     const renderSelectType = () => {
 
         return (
@@ -93,20 +107,33 @@ export default function SearchBar({ handleSearchData, searchData }) {
                     <Grid item xs={2}>{renderSelectType()}</Grid>
                     <Grid container item xs={2}>
                         <Grid item xs={6}>
-                            <TextField
-                                required
-                                label="Pick-Up Location"
-                                variant="outlined"
-                                value={pickUpLocation}
-                                onChange={handlePickUpLocation} />
+                            <FormControl fullWidth>
+                                <InputLabel >Pick Up Location</InputLabel>
+                                <Select
+                                    value={pickUpLocation}
+                                    label="pickUpLocation"
+                                    onChange={handlePickUpLocation}
+                                >
+                                    {officeList?.map((office, index) => (
+                                        <MenuItem value={office.officeId} key={office.city + index}>{`${office.city} - ${office.name}`}</MenuItem>
+
+                                    ))}
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                required
-                                label="Drop-Off Location"
-                                variant="outlined"
-                                value={dropOffLocation}
-                                onChange={handleDropOffLocation} />
+                            <FormControl fullWidth>
+                                <InputLabel >Drop Off Location</InputLabel>
+                                <Select
+                                    value={dropOffLocation}
+                                    label="dropOffLocation"
+                                    onChange={handleDropOffLocation}
+                                >
+                                    {officeList?.map((office, index) => (
+                                        <MenuItem value={office.officeId} key={office.city + index}>{`${office.city} - ${office.name}`}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                         </Grid>
                     </Grid>
                     <Grid container item xs={6} spacing={2} >
@@ -152,7 +179,7 @@ export default function SearchBar({ handleSearchData, searchData }) {
                     </Grid>
                     <Grid item xs={2}>
                         <Button variant="contained" size="large" style={{ transform: 'scale(1.5)' }} type="submit">
-                            Continue
+                            Search
                         </Button>
                     </Grid>
                 </Grid>

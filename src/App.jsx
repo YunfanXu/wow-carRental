@@ -5,21 +5,21 @@ import LoginForm from './components/LoginForm';
 import JoinForm from './components/JoinForm';
 import Checkout from "./pages/CheckoutPage";
 import UserPage from "./pages/userPage";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import {
   Routes,
   Route,
 } from "react-router-dom";
 
 const App = () => {
-  const [isShowLogin, setIsShowLogin] = useState(true);
+  const [isShowLogin, setIsShowLogin] = useState(false);
 
   const handleLoginClick = () => {
     setIsShowLogin((isShowLogin) => !isShowLogin);
   };
 
 
-  const [isShowJoin, setIsShowJoin] = useState(true);
+  const [isShowJoin, setIsShowJoin] = useState(false);
 
   const handleJoinClick = () => {
     setIsShowJoin((isShowJoin) => !isShowJoin);
@@ -37,8 +37,8 @@ const App = () => {
           <Route path="/user" element={<UserPage />} />
         </Routes>
       </div>
-      <LoginForm isShowLogin={isShowLogin} handleLoginClick={handleLoginClick} />
-      <JoinForm isShowJoin={isShowJoin} handleJoinClick={handleJoinClick} />
+      <LoginForm isShowLogin={isShowLogin} handleLoginClick={handleLoginClick} handleJoinClick={handleJoinClick} />
+      <JoinForm isShowJoin={isShowJoin} handleLoginClick={handleLoginClick} handleJoinClick={handleJoinClick} />
     </div>
 
   );

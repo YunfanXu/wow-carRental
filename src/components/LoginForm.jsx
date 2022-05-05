@@ -15,6 +15,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { setToken, setUser } from '../utils/user';
+import ForgetPasswordDialog from './ForgetPasswordDialog.jsx';
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -30,10 +32,15 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-function LoginForm({ isShowLogin, handleLoginClick }) {
+function LoginForm({ isShowLogin, handleLoginClick, handleJoinClick }) {
   const [showError, setShowError] = React.useState(false);
   const api = new UserApi();
   const [loading, setLoading] = React.useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   const renderErrorBox = () => {
     return (
@@ -49,6 +56,13 @@ function LoginForm({ isShowLogin, handleLoginClick }) {
     return userInfo;
   }
 
+  const handleForgetPassword = () => {
+    setOpenDialog(true);
+  }
+  const handleSignUp = () => {
+    handleLoginClick(false);
+    handleJoinClick(true);
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -77,7 +91,7 @@ function LoginForm({ isShowLogin, handleLoginClick }) {
     }
   }
   return (
-    <div onClick={handleClickBox} className={`${isShowLogin ? "active" : ""} show `}>
+    <div onClick={handleClickBox} className={isShowLogin ? 'show' : 'isHidden'}>
       <div className="login-form">
         <ThemeProvider theme={theme}>
           <Container component="main" maxWidth="xs" style={{ backgroundColor: 'white', borderRadius: 20 }}>
@@ -132,12 +146,12 @@ function LoginForm({ isShowLogin, handleLoginClick }) {
                 </LoadingButton>
                 <Grid container>
                   <Grid item xs>
-                    <Link href="#" variant="body2">
+                    <Link href="#" variant="body2" onClick={handleForgetPassword}>
                       Forgot password?
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="#" variant="body2" onClick={handleSignUp} >
                       {"Don't have an account? Sign Up"}
                     </Link>
                   </Grid>
@@ -146,6 +160,7 @@ function LoginForm({ isShowLogin, handleLoginClick }) {
             </Box>
             <Copyright sx={{ mt: 8, mb: 4 }} />
           </Container>
+          <ForgetPasswordDialog open={openDialog} handleClose={handleCloseDialog} />
         </ThemeProvider>
       </div>
     </div>

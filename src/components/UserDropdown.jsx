@@ -4,12 +4,20 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from "react-router-dom";
+import ResetPasswordDialog from './ResetPasswordDialog';
+import ChangePasswordDialog from './ResetPasswordDialog';
 
 export default function BasicMenu({ userName = "", handleLogout }) {
     let navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+    const [openDialog, setOpenDialog] = React.useState(false);
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -25,7 +33,15 @@ export default function BasicMenu({ userName = "", handleLogout }) {
     const handleClickAccount = () => {
         navigate('/user')
         setAnchorEl(null);
+    }
 
+    const handleClickOrder = () => {
+        setAnchorEl(null);
+    }
+
+    const handleClickReset = () => {
+        setOpenDialog(true);
+        setAnchorEl(null);
     }
     return (
         <div className='loginicon login-textBox' style={{ justifyContent: 'space-around' }} >
@@ -50,8 +66,11 @@ export default function BasicMenu({ userName = "", handleLogout }) {
                 }}
             >
                 <MenuItem onClick={handleClickAccount}>My account</MenuItem>
+                <MenuItem onClick={handleClickOrder}>Order Summary</MenuItem>
+                <MenuItem onClick={handleClickReset}>Reset Password</MenuItem>
                 <MenuItem onClick={handleClickLogout}>Logout</MenuItem>
             </Menu>
+            <ChangePasswordDialog open={openDialog} handleClose={handleCloseDialog} />
         </div>
     );
 }

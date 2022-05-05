@@ -26,7 +26,7 @@ export const Navigation = ({ handleLoginClick, handleJoinClick }) => {
     return (
       <>
         <li>
-          <div onClick={handleLoginButton} className='loginicon'>
+          <div onClick={handleLoginButton}  className='loginicon'>
             Log in
           </div>
         </li>

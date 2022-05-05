@@ -124,6 +124,10 @@ const getBasicInfo = (orderInfo) => {
       val: orderInfo.carInfo.class_type
     },
     {
+      name: 'Limited Miles Per day',
+      val: orderInfo.carInfo.limitMilePerDay
+    },
+    {
       name: 'Pick up Time',
       val: convertDate(new Date(searchData.pickupTime))
     },

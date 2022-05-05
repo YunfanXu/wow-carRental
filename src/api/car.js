@@ -24,6 +24,7 @@ export default class UserApi {
             result = await fetch(this.basePath + '/api/carInfo/valid', data)
                 .then(response => response.json())
                 .then(response => {
+                    console.log("response", response)
                     if (response.code === 200 || response.message === 'success') {
                         return response.data
                     } else {
@@ -32,6 +33,31 @@ export default class UserApi {
                 }).catch(e => {
                     console.log("Error:", e.message)
                 })
+        } catch (e) {
+            console.log("Error:", e.message)
+        }
+        return result;
+    }
+
+    async getOffices() {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        let result = 400;
+        try {
+            result = await fetch("http://67.207.80.139:8080/api/officeMaintain/OfficeInformation", requestOptions)
+                .then(response => response.json())
+                .then(response => {
+                    if (response.code === 200 || response.message === 'success') {
+                        console.log("office", response.data)
+                        return response.data
+                    } else {
+                        return 400
+                    }
+                })
+                .catch(error => console.log('error', error));
         } catch (e) {
             console.log("Error:", e.message)
         }

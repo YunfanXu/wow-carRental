@@ -171,5 +171,83 @@ export default class UserApi {
         }
         return result;
     }
+
+    async updatePassword(inputData) {
+        const params = { ...this.params };
+        const { id, token } = getUserInfo();
+        params.headers.set("Authorization", token);
+        params.method = 'POST';
+        const data = Object.assign({},
+            params,
+            { body: JSON.stringify(inputData) });
+        let result = false;
+        try {
+            result = await fetch(this.basePath + '/reset', data)
+                .then(response => response.json())
+                .then(response => {
+                    console.log("response",response)
+                    if (response.code === 200 || response.message === 'success') {
+                        return true
+                    } else {
+                        return response.message
+                    }
+                }).catch(e => {
+                    console.log("Error:", e.message)
+                })
+        } catch (e) {
+            console.log("Update User Address Error:", e.message)
+        }
+        return result;
+    }
+
+    async updatePasswordBySecret(inputData) {
+        const params = { ...this.params };
+        params.method = 'POST';
+        const data = Object.assign({},
+            params,
+            { body: JSON.stringify(inputData) });
+        let result = false;
+        try {
+            result = await fetch(this.basePath + '/reset', data)
+                .then(response => response.json())
+                .then(response => {
+                    console.log("updatePasswordBySecret",response)
+                    if (response.code === 200 || response.message === 'success') {
+                        return true
+                    } else {
+                        return response.message
+                    }
+                }).catch(e => {
+                    console.log("Error:", e.message)
+                })
+        } catch (e) {
+            console.log("Update User Address Error:", e.message)
+        }
+        return result;
+    }
+
+    async resetSendEmail(email) {
+        const params = { ...this.params };
+        params.method = 'GET';
+        const data = Object.assign({},params);
+        let result = false;
+        try {
+            result = await fetch(this.basePath + '/reset/' + email, data)
+                .then(response => response.json())
+                .then(response => {
+                    console.log("resetSendEmail",response)
+                    if (response.code === 200 || response.message === 'success') {
+                        return true
+                    } else {
+                        return response.message
+                    }
+                }).catch(e => {
+                    console.log("Error:", e.message)
+                })
+        } catch (e) {
+            console.log("Update User Address Error:", e.message)
+        }
+        return result;
+    }
 }
 

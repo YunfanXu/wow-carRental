@@ -30,7 +30,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-const JoinForm = ({ isShowJoin, handleJoinClick }) => {
+const JoinForm = ({ isShowJoin, handleJoinClick, handleLoginClick }) => {
   const api = new UserApi();
   const [showError, setShowError] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -43,6 +43,10 @@ const JoinForm = ({ isShowJoin, handleJoinClick }) => {
     }
   }
 
+  const handleSignIn = () => {
+    handleLoginClick(true);
+    handleJoinClick(false);
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -53,6 +57,7 @@ const JoinForm = ({ isShowJoin, handleJoinClick }) => {
       password: data.get('password'),
       fname: data.get('firstName'),
       lname: data.get('lastName'),
+      phoneNum: data.get('phoneNum'),
       role_type,
       userAddress: {
         street: data.get('address1') + '\n' + data.get('address2'),
@@ -91,12 +96,11 @@ const JoinForm = ({ isShowJoin, handleJoinClick }) => {
     setRoleType(e.target.value);
   }
 
-
   return (
-    <div onClick={handleClickBox} className={`${isShowJoin ? "active" : ""} show `}>
+    <div onClick={handleClickBox} className={isShowJoin ? 'show' : 'isHidden'}>
       <div className="login-form">
         <ThemeProvider theme={theme}>
-          <Container component="main" maxWidth="xs" style={{ backgroundColor: 'white', borderRadius: 20 }}>
+          <Container component="main" maxWidth="xs" style={{ backgroundColor: 'white', marginTop: '20vh ', borderRadius: 20 }}>
             <CssBaseline />
             <Box
               sx={{
@@ -135,7 +139,7 @@ const JoinForm = ({ isShowJoin, handleJoinClick }) => {
                 </LoadingButton>
                 <Grid container justifyContent="flex-end">
                   <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="#" variant="body2" onClick={handleSignIn}>
                       Already have an account? Sign in
                     </Link>
                   </Grid>
