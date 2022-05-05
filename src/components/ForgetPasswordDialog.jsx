@@ -127,7 +127,11 @@ export default function ForgetPasswordDialog({ open, handleClose }) {
                         />
                         {showError.isShown ? renderErrorBox() : null}
 
-                        <Stack direction='row' spacing={2}>
+                        <Stack spacing={2}
+                            direction="row"
+                            justifyContent="space-evenly"
+                            alignItems="center"
+                        >
                             <Button
                                 variant="contained"
                                 onClick={handleClose}>Cancel</Button>

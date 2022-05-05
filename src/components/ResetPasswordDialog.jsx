@@ -23,7 +23,6 @@ export default function ChangePasswordDialog({ open, handleClose }) {
 
   const getUserEmail = () => {
     let info = getUserInfo();
-    console.log("info", info);
     return info.email;
   }
 
@@ -31,7 +30,7 @@ export default function ChangePasswordDialog({ open, handleClose }) {
     return (
       <Grid item xs={12}>
         <Typography variant="body1" component="h2" color='error'>
-        {showError.message}
+          {showError.message}
         </Typography>
       </Grid>
     )
@@ -95,17 +94,24 @@ export default function ChangePasswordDialog({ open, handleClose }) {
             />
             {showError.isError ? renderErrorBox() : null}
 
-            <Button
-              variant="contained"
-              onClick={handleClose}>Cancel</Button>
-            <LoadingButton
-              type="submit"
-              variant="contained"
-              loading={loading}
-              sx={{ mt: 3, mb: 2 }}
+            <Stack spacing={2}
+              direction="row"
+              justifyContent="space-evenly"
+              alignItems="center"
             >
-              Confirm
-            </LoadingButton>
+              <Button
+                variant="contained"
+                onClick={handleClose}>Cancel</Button>
+              <LoadingButton
+                type="submit"
+                variant="contained"
+                loading={loading}
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Confirm
+              </LoadingButton>
+            </Stack>
+
           </Stack>
 
         </Box>
