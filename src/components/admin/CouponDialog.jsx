@@ -103,56 +103,21 @@ const OfficeForm = ({ officeInfo }) => {
         </>
     )
 }
-export default function OfficeDialog({ open, handleClose , updateOfficeList}) {
+export default function OfficeDialog({ open, handleClose }) {
     const [loading, setLoading] = React.useState(false);
-    const [officeState, setOfficeState] = React.useState({
-        officeId: '',
-        name: '',
-        city: '',
-        street: '',
-        state: '',
-        zipcode: '',
-        phoneNum: '',
-        country: '',
+    const [coupon, setCoupon] = React.useState({
+       
     });
 
     const api = new OfficeAPI();
-    const handleOfficeChange = (e) => {
-        setOfficeState({
-            ...officeState,
-            [e.target.name]: e.target.value
-        })
-    }
+    
 
-    React.useEffect(() => {
-        if (open && open.officeInfo) {
-            setOfficeState({ ...open.officeInfo });
-        }
-    }, [])
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
         const data = new FormData(event.currentTarget);
-        let officeInfo = {
-            name: data.get('name'),
-            street: data.get('street'),
-            city: data.get('city'),
-            state: data.get('state'),
-            zipcode: data.get('zipcode'),
-            country: data.get('country'),
-            phoneNum: data.get('phoneNum'),
-        }
-        console.log("officeInfo", officeInfo);
-        let response = null;
-        if (open.isEdit) {
-            response = await api.updateOffice(officeInfo, open.officeInfo.officeId)
-        } else {
-            response = await api.createOffice(officeInfo)
-        }
-        if(response && response === 'success'){
-            updateOfficeList();
-            handleClose();
-        }
+       
         setLoading(false);
 
     }

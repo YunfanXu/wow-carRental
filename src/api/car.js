@@ -5,7 +5,7 @@ export default class UserApi {
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-        this.basePath = 'http://67.207.80.139:8080';
+        this.basePath = 'http://67.207.80.139:8086';
         this.params = {
             method: 'POST',
             headers: myHeaders,
@@ -23,6 +23,7 @@ export default class UserApi {
             result = await fetch(this.basePath + '/api/carInfo/valid', data)
                 .then(response => response.json())
                 .then(response => {
+                    console.log("car", response.data)
                     if (response.code === 200 || response.message === 'success') {
                         return response.data
                     } else {

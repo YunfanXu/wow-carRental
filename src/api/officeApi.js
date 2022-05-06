@@ -6,7 +6,7 @@ export default class AdminApi {
         myHeaders.set("Content-Type", "application/json");
         myHeaders.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-        this.basePath = 'http://67.207.80.139:8080/api/officeMaintain';
+        this.basePath = 'http://67.207.80.139:8086/api/';
         this.params = {
             method: 'POST',
             headers: myHeaders,
@@ -20,7 +20,7 @@ export default class AdminApi {
         params.method = 'GET';
         let result = 400;
         try {
-            result = await fetch(this.basePath + '/getOfficeInfo', params)
+            result = await fetch(this.basePath + '/office', params)
                 .then(response => response.json())
                 .then(response => {
                     if (response.code === 200 || response.message === 'success') {
@@ -48,7 +48,7 @@ export default class AdminApi {
             { body: JSON.stringify(officeInfo) });
         let result = 400;
         try {
-            result = await fetch(this.basePath + '/updateOffice/' + officeId, data)
+            result = await fetch(this.basePath + '/office/' + officeId, data)
                 .then(response => response.json())
                 .then(response => {
                     if (response.code === 200) {
@@ -75,9 +75,37 @@ export default class AdminApi {
             { body: JSON.stringify(officeInfo) });
         let result = 400;
         try {
-            result = await fetch(this.basePath + '/createOfficeInfo', data)
+            result = await fetch(this.basePath + '/office', data)
                 .then(response => response.json())
                 .then(response => {
+                    if (response.code === 200) {
+                        return response.data
+                    } else {
+                        return 400
+                    }
+                }).catch(e => {
+                    console.log("Error:", e.message)
+                })
+        } catch (e) {
+            console.log("Update User OfficeInfo Error:", e.message)
+        }
+        return result;
+    }
+
+    async deleteOffice(inputData) {
+        console.log("inputData", inputData)
+
+        const params = { ...this.params };
+        const { token } = getUserInfo();
+        params.headers.set("Authorization", token);
+        params.method = 'DELETE';
+        const data = Object.assign({}, params);
+        let result = 400;
+        try {
+            result = await fetch(this.basePath + '/office/' + inputData.officeId, data)
+                .then(response => response.json())
+                .then(response => {
+                    console.log("response", response)
                     if (response.code === 200) {
                         return response.data
                     } else {

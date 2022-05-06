@@ -3,42 +3,39 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
-
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import CarIcon from '@mui/icons-material/DirectionsCar';
 export function MainListItems({ handleClick }) {
-  const handleButton = (e) => {
-    console.log(e.target.value);
-    handleClick(e.target.value);
-  }
   return (
     <React.Fragment>
-      <ListItemButton value={0} onClick={handleButton}>
+      <ListItemButton onClick={() => handleClick(0)} >
         <ListItemIcon>
-          <DashboardIcon />
+          <HomeWorkIcon />
         </ListItemIcon>
         <ListItemText primary="Offices" />
       </ListItemButton>
-      <ListItemButton value={1} onClick={handleButton}>
+      <ListItemButton onClick={() => handleClick(1)}>
+        <ListItemIcon>
+          <CardGiftcardIcon />
+        </ListItemIcon>
+        <ListItemText primary="Coupons" />
+      </ListItemButton>
+      <ListItemButton onClick={() => handleClick(2)}>
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
         <ListItemText primary="Orders" />
       </ListItemButton >
-      <ListItemButton value={2} onClick={handleButton}>
+      <ListItemButton onClick={() => handleClick(3)}>
         <ListItemIcon>
-          <PeopleIcon />
+          <CarIcon />
         </ListItemIcon>
-        <ListItemText primary="Customers" />
+        <ListItemText primary="Cars" />
       </ListItemButton>
-      <ListItemButton value={3} onClick={handleButton}>
-        <ListItemIcon>
-          <BarChartIcon />
-        </ListItemIcon>
-        <ListItemText primary="Reports" />
-      </ListItemButton>
+
     </React.Fragment>
   )
 }

@@ -10,12 +10,10 @@ import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 import { getLocationList } from '../../utils/user';
 import OfficeDialog from './OfficeDialog';
-import OfficeAPI from '../../api/officeApi';
 
 
-export default function Orders() {
-    const api = new OfficeAPI();
-    const [officeList, setOfficeList] = React.useState([]);
+export default function MaintainCars() {
+    const locationList = getLocationList();
     const [open, setOpen] = React.useState({
         isOpen: false
     });
@@ -25,22 +23,16 @@ export default function Orders() {
             isOpen: false
         });
     }
+    console.log("locationList", locationList);
 
     const EditButton = (officeInfo) => {
         return (
-            <Button variant="outlined" size="small" color="success" sx={{ ml:1}} onClick={() => handleEditButton(officeInfo)}>
+            <Button variant="outlined" onClick={() => handleEditButton(officeInfo)}>
                 Edit
             </Button>
         )
     }
 
-    const DeleteButton = (officeId) => {
-        return (
-            <Button variant="outlined" size="small" color="error" sx={{ ml:1}} onClick={() => handleDeleteButton(officeId)}>
-                Delete
-            </Button>
-        )
-    }
     const AddButton = () => {
         return (
             <Button variant="contained" onClick={handleAddButton}>
@@ -51,6 +43,7 @@ export default function Orders() {
 
 
     const handleAddButton = () => {
+        console.log("Add")
         setOpen(
             {
                 isOpen: true
@@ -67,31 +60,14 @@ export default function Orders() {
                 officeInfo
             }
         );
+
         console.log("Edit officeInfo", officeInfo)
+
     }
-
-    const updateOfficeList = async () => {
-        await api.getOffices();
-        const locationList = getLocationList();
-        setOfficeList(locationList)
-    }
-
-    const handleDeleteButton = async (officeId) => {
-        const response = await api.deleteOffice(officeId);
-        console.log("handleDeleteButton", response)
-        if (response === 'success') {
-            updateOfficeList();
-        }
-    }
-
-
-    React.useEffect(() => {
-        updateOfficeList();
-    }, []);
 
     return (
         <React.Fragment>
-            <Title>Office List</Title>
+            <Title>Car List</Title>
             <Box sx={{ width: '180px', mt: 1, mb: 1 }} component='div'>
                 <AddButton />
             </Box>
@@ -110,7 +86,7 @@ export default function Orders() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {officeList.map((row, index) => (
+                    {locationList.map((row, index) => (
                         <TableRow key={row.officeId}>
                             <TableCell>{row.officeId}</TableCell>
                             <TableCell>{row.name}</TableCell>
@@ -121,14 +97,13 @@ export default function Orders() {
                             <TableCell>{row.phoneNum}</TableCell>
                             <TableCell>
                                 <EditButton officeInfo={row} />
-                                <DeleteButton officeId={row.officeId} />
                             </TableCell>
 
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
-            <OfficeDialog open={open} handleClose={handleClose} updateOfficeList={updateOfficeList}/>
+            <OfficeDialog open={open} handleClose={handleClose} />
             {/* <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
                 See more orders
             </Link> */}
