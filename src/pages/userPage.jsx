@@ -219,9 +219,9 @@ export default function User() {
                         <Grid item container xs={12} component={Paper} elevation={6} square>
                             <RenderCouponList />
                         </Grid>
-                        <Grid item container xs={12} component={Paper} elevation={6} square>
+                        {/* <Grid item container xs={12} component={Paper} elevation={6} square>
                             <RenderOrder />
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </Grid>
             </div>

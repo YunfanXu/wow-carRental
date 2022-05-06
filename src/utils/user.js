@@ -1,6 +1,7 @@
 const USER_INFO = 'user_info';
 const USER_TOKEN = 'user_token';
 const SEARCH_INFO = 'SEARCH_INFO';
+const LOCATION = 'LOCATION';
 
 export function setToken(token) {
     return localStorage.setItem(USER_TOKEN, JSON.stringify(token));
@@ -38,4 +39,11 @@ export function getSearchInfo() {
 export function removeSearchInfo() {
     localStorage.removeItem(SEARCH_INFO);
     return;
+}
+
+export function setLocationList(data){
+    return localStorage.setItem(LOCATION, JSON.stringify(data));
+}
+export function getLocationList(){
+    return JSON.parse(localStorage.getItem(LOCATION));
 }

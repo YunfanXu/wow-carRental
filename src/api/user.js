@@ -25,6 +25,8 @@ export default class UserApi {
             result = await fetch(this.basePath + '/login', params)
                 .then(response => response.json())
                 .then(response => {
+                    console.log("response", response)
+
                     if (response.message === 'success') {
                         return response.data
                     } else {
@@ -132,6 +134,7 @@ export default class UserApi {
             result = await fetch(this.basePath + '/api/user', data)
                 .then(response => response.json())
                 .then(response => {
+                    console.log("getUserInfo", response)
                     if (response.code === 0 || response.message === 'success') {
                         return response.data
                     } else {

@@ -5,6 +5,9 @@ import LoginForm from './components/LoginForm';
 import JoinForm from './components/JoinForm';
 import Checkout from "./pages/CheckoutPage";
 import UserPage from "./pages/userPage";
+import OrderPage from "./pages/OrderPage";
+import AdminPage from "./pages/AdminPage";
+
 import { useState, useEffect } from "react";
 import {
   Routes,
@@ -26,7 +29,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    localStorage.clear();
+    // localStorage.clear();
   }, [])
   return (
     <div>
@@ -35,6 +38,9 @@ const App = () => {
           <Route path="/" element={<MainPage handleLoginClick={handleLoginClick} handleJoinClick={handleJoinClick} />} />
           <Route path="/payment" element={<Checkout />} />
           <Route path="/user" element={<UserPage />} />
+          <Route path="/order" element={<OrderPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+
         </Routes>
       </div>
       <LoginForm isShowLogin={isShowLogin} handleLoginClick={handleLoginClick} handleJoinClick={handleJoinClick} />

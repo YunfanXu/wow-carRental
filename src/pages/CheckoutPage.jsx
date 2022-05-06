@@ -59,14 +59,9 @@ const createOrderData = (orderInfo, couponId) => {
         "startOdometer": 0
 
     }
-
-    console.log("orderInfo",orderInfo)
-
-    if(data.couponId === 0){
+    if (data.couponId === 0) {
         delete data.couponId;
     }
-    console.log("data",data)
-
     return data;
 }
 
@@ -88,6 +83,7 @@ export default function Checkout(props) {
         cvv: '',
     });
     const [couponId, setCouponId] = React.useState('');
+
     const [openSnack, setOpenSnack] = React.useState({
         open: false,
         message: ''
@@ -95,14 +91,14 @@ export default function Checkout(props) {
 
     const [seconds, setSeconds] = React.useState(5);
 
-    const [orderInfo, SetOrderInfo] = React.useState({});
 
     let navigate = useNavigate();
     let api = new orderApi();
+
+
     const location = useLocation();
     const { carInfo, searchData } = location.state;
-
-
+    const [orderInfo, SetOrderInfo] = React.useState({ carInfo, searchData, cardInfo: state });
 
     const handleClose = () => {
         setOpenSnack({ ...openSnack, open: false });
@@ -112,44 +108,39 @@ export default function Checkout(props) {
     const placeOrder = async (orderInfo, couponId) => {
         let data = createOrderData(orderInfo, couponId)
         let response = await api.createOrder(data);
-        if (response && response.invoice) {
-            let paymentData = createPaymentData(orderInfo, response.invoice);
-            let paymentResponse = api.createPayment(paymentData);
-            if (paymentResponse) {
-                setActiveStep(activeStep + 1);
-                let count = 5;
-                let timer = setInterval(() => {
-                    count--;
-                    if (count >= 0) {
-                        setSeconds(count);
-                    } else {
-                        clearInterval(timer);
-                        navigate('/');
-                    }
-                }, 1000)
-            }
+        if (response && response === 200) {
+            setActiveStep(activeStep + 1);
+            let count = 5;
+            let timer = setInterval(() => {
+                count--;
+                if (count >= 0) {
+                    setSeconds(count);
+                } else {
+                    clearInterval(timer);
+                    navigate('/');
+                }
+            }, 1000)
+
+            // let paymentData = createPaymentData(orderInfo, response.invoice);
+            // let paymentResponse = api.createPayment(paymentData);
+            // if (paymentResponse) {
+            //     setActiveStep(activeStep + 1);
+            //     let count = 5;
+            //     let timer = setInterval(() => {
+            //         count--;
+            //         if (count >= 0) {
+            //             setSeconds(count);
+            //         } else {
+            //             clearInterval(timer);
+            //             navigate('/');
+            //         }
+            //     }, 1000)
+            // }
 
         }
     }
-    const handleNext = () => {
-        if (activeStep === 0) {
-            if (Object.values(state).some(item => !item)) {
-                setOpenSnack({
-                    open: true,
-                    message: 'Please Fill in the form!'
-                });
-            } else {
-                setActiveStep(activeStep + 1);
-                SetOrderInfo({ carInfo, searchData, cardInfo: state })
-            }
-        } else if (activeStep === 1) {
-            placeOrder(orderInfo, couponId)
-        }
-
-    };
-
-    const handleBack = () => {
-        setActiveStep(activeStep - 1);
+    const handlePlaceOrder = () => {
+        placeOrder(orderInfo, couponId)
     };
 
     const handleStateChange = (e) => {
@@ -162,6 +153,7 @@ export default function Checkout(props) {
     const handleCouponChange = (e) => {
         setCouponId(e.target.value)
     }
+
     function getStepContent(step, state, handleChange) {
         switch (step) {
             case 0:
@@ -217,15 +209,8 @@ export default function Checkout(props) {
                     <Typography component="h1" variant="h4" align="center">
                         Checkout
                     </Typography>
-                    <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-                        {steps.map((label) => (
-                            <Step key={label}>
-                                <StepLabel>{label}</StepLabel>
-                            </Step>
-                        ))}
-                    </Stepper>
                     <React.Fragment>
-                        {activeStep === steps.length ? (
+                        {activeStep === 1 ? (
                             <React.Fragment>
                                 <Typography variant="h5" gutterBottom>
                                     {`Thank you for your order.  You will be directed to the Home page after ${seconds} seconds.`}
@@ -233,20 +218,14 @@ export default function Checkout(props) {
                             </React.Fragment>
                         ) : (
                             <React.Fragment>
-                                {getStepContent(activeStep, state, handleStateChange)}
+                                <Review orderInfo={orderInfo} couponId={couponId} handleChange={handleCouponChange} />
                                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                    {activeStep !== 0 && (
-                                        <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                                            Back
-                                        </Button>
-                                    )}
-
                                     <Button
                                         variant="contained"
-                                        onClick={handleNext}
+                                        onClick={handlePlaceOrder}
                                         sx={{ mt: 3, ml: 1 }}
                                     >
-                                        {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                                        {'Place order'}
                                     </Button>
                                 </Box>
                             </React.Fragment>

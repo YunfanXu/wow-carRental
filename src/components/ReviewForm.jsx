@@ -96,8 +96,8 @@ const getPayment = (cardInfo) => {
 }
 
 
-const getTotalCost = (costPerDay, endDate, startDate) => {
-  return Math.ceil((endDate - startDate) / (1000 * 3600 * 24)) * Number(costPerDay);
+const getTotalCost = (costPerDay, endDate, startDate, discount = 1) => {
+  return Math.round(Math.ceil((endDate - startDate) / (1000 * 3600 * 24)) * Number(costPerDay) * discount * 100) / 100;
 }
 
 const convertDate = (date) => {
@@ -165,21 +165,19 @@ const renderBasicInfo = (orderInfo) => {
     </>
   )
 }
-export default function Review({ orderInfo, couponId, handleChange }) {
-  let payments = getPayment(orderInfo.cardInfo);
-  let totalCost = getTotalCost(orderInfo.carInfo.pricePerDay, orderInfo.searchData.dropOffTime, orderInfo.searchData.pickupTime)
-
+export default function Review({ orderInfo, couponId, handleChange, discount = 1 }) {
+  let totalCost = getTotalCost(orderInfo?.carInfo?.pricePerDay, orderInfo?.searchData?.dropOffTime, orderInfo?.searchData?.pickupTime, discount)
 
   return (
     <React.Fragment>
       <Title gutterBottom>
         Order summary
       </Title>
-      <Grid container sx={{flexGrow:1, padding: '30px 0'}} >
+      <Grid container sx={{ flexGrow: 1, padding: '30px 0' }} >
         {renderCarInfo(orderInfo.carInfo)}
       </Grid>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} md={6}>
           <Title gutterBottom sx={{ mt: 2 }}>
             Basic Infomation:
           </Title>
@@ -187,35 +185,21 @@ export default function Review({ orderInfo, couponId, handleChange }) {
             {renderBasicInfo(orderInfo)}
           </Grid>
         </Grid>
-        <Grid item container direction="column" xs={12} sm={6}>
+        <Grid item container xs={12} md={6}>
           <Title gutterBottom sx={{ mt: 2 }}>
-            Payment details
+            Select Coupons:
           </Title>
-          <Grid container>
-            {payments.map((payment) => (
-              <React.Fragment key={payment.name}>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
-                </Grid>
-              </React.Fragment>
-            ))}
+          <Grid item xs={12} >
+            <Coupon couponId={couponId} handleChange={handleChange} />
           </Grid>
-        </Grid>
-      </Grid>
-      <Grid container style={{ paddingTop: '30px' }}>
-        <Grid item xs={12} md={6}>
-          <Coupon couponId={couponId} handleChange={handleChange} />
-        </Grid>
-        <Grid container item xs={12} md={6} justifyContent='space-between' sx={{ padding: '20px 0' }}>
-          <Title sx={{ fontWeight: 800 }}>
-            Total Cost:
-          </Title>
-          <Title sx={{ fontWeight: 800 }}>
-            ${totalCost}
-          </Title>
+          <Grid container item xs={10} justifyContent='space-between' sx={{ padding: '20px 0' }}>
+            <Title sx={{ fontWeight: 800 }}>
+              Total Cost:
+            </Title>
+            <Title sx={{ fontWeight: 800 }}>
+              ${totalCost}
+            </Title>
+          </Grid>
         </Grid>
       </Grid>
     </React.Fragment>

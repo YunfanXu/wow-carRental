@@ -40,6 +40,31 @@ export default class UserApi {
         return result;
     }
 
+    async getUserOrders() {
+        const params = { ...this.params };
+        const { id, token } = getUserInfo();
+        params.headers.set("Authorization", token);
+        params.method = 'GET';
+        const data = Object.assign({}, params);
+        let result = 400;
+        try {
+            result = await fetch(this.basePath + '/api/order/u/' + id, data)
+                .then(response => response.json())
+                .then(response => {
+                    console.log("getUserOrders", response)
+                    if (response.code === 0 || response.message === 'success') {
+                        return response.data
+                    } else {
+                        return 400
+                    }
+                }).catch(e => {
+                    console.log("Error:", e.message)
+                })
+        } catch (e) {
+            console.log("Update User Address Error:", e.message)
+        }
+        return result;
+    }
     async createOrder(inputData) {
         const params = { ...this.params };
         const { token } = getUserInfo();
@@ -50,11 +75,12 @@ export default class UserApi {
         let result = 400;
         try {
             result = await fetch(this.basePath + '/api/order', data)
+
                 .then(response => response.json())
                 .then(response => {
                     console.log("createOrder", response)
                     if (response.code === 200 || response.message === 'success') {
-                        return response.data
+                        return response.code
                     } else {
                         return 400
                     }

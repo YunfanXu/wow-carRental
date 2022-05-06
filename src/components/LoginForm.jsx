@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import UserApi from '../api/user.js';
 import LoadingButton from '@mui/lab/LoadingButton';
-
+import { useNavigate } from "react-router-dom";
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -37,6 +37,8 @@ function LoginForm({ isShowLogin, handleLoginClick, handleJoinClick }) {
   const api = new UserApi();
   const [loading, setLoading] = React.useState(false);
   const [openDialog, setOpenDialog] = React.useState(false);
+  let navigate = useNavigate();
+
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
@@ -77,9 +79,18 @@ function LoginForm({ isShowLogin, handleLoginClick, handleJoinClick }) {
       setToken(message.token);
 
       let basicUserInfo = await getUserInfo();
+      console.log("basicUserInfo", basicUserInfo);
+      /*
+        test Admin page
+      */
+
       setUser({ ...message, ...basicUserInfo });
       setShowError(false);
       handleLoginClick(false);
+
+      if (basicUserInfo && basicUserInfo.role_type === '0') {
+        navigate('/admin')
+      }
     } else {
       setShowError(true);
     }

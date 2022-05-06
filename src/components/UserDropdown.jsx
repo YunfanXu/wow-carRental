@@ -36,6 +36,7 @@ export default function BasicMenu({ userName = "", handleLogout }) {
     }
 
     const handleClickOrder = () => {
+        navigate('/order')
         setAnchorEl(null);
     }
 
