@@ -6,7 +6,7 @@ export default class UserApi {
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-        this.basePath = 'http://67.207.80.139:8086';
+        this.basePath = 'http://67.207.80.139:8080';
         this.params = {
             method: 'POST',
             headers: myHeaders,

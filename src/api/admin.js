@@ -6,7 +6,7 @@ export default class AdminApi {
         myHeaders.set("Content-Type", "application/json");
         myHeaders.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-        this.basePath = 'http://67.207.80.139:8086';
+        this.basePath = 'http://67.207.80.139:8080';
         this.params = {
             method: 'POST',
             headers: myHeaders,
@@ -117,6 +117,36 @@ export default class AdminApi {
                     console.log("createCouponsBatch", response)
                     if (response.code === 200) {
                         return response.data
+                    } else {
+                        return 400
+                    }
+                }).catch(e => {
+                    console.log("Error:", e.message)
+                })
+        } catch (e) {
+            console.log("Update User inputData Error:", e.message)
+        }
+        return result;
+    }
+
+    async maintainOrder(orderId, inputData) {
+        const params = { ...this.params };
+        const { token } = getUserInfo();
+        params.headers.set("Authorization", token);
+        params.method = 'POST';
+        const data = Object.assign({},
+            params,
+            { body: JSON.stringify(inputData) });
+        let result = 400;
+        try {
+            console.log("orderId",orderId)
+            console.log("inputData",inputData)
+
+            result = await fetch(this.basePath + '/api/order/' + orderId, data)
+                .then(response => response.json())
+                .then(response => {
+                    if (response.code === 200 || response.message === 'success') {
+                        return 200
                     } else {
                         return 400
                     }

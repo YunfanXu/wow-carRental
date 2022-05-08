@@ -35,11 +35,12 @@ const App = () => {
     <div>
       <div style={{ height: '100%', overflow: 'auto' }}>
         <Routes>
+
           <Route path="/" element={<MainPage handleLoginClick={handleLoginClick} handleJoinClick={handleJoinClick} />} />
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="/payment" element={<Checkout />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="/order" element={<OrderPage />} />
-          <Route path="/admin" element={<AdminPage />} />
 
         </Routes>
       </div>

@@ -17,7 +17,6 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { MainListItems } from './listItems';
-import Orders from './Orders';
 import PersonIcon from '@mui/icons-material/Person';
 import {
   useNavigate,
@@ -26,6 +25,8 @@ import Button from '@mui/material/Button';
 import { removeToken, removeUser } from '../../utils/user';
 import Location from './Location';
 import Coupons from './Coupons';
+import MaintainOrder from './Orders';
+import MaintainCar from './MaintainCars';
 
 function Copyright(props) {
   return (
@@ -110,6 +111,10 @@ function DashboardContent() {
         return <Location />;
       case 1:
         return <Coupons />;
+      case 2:
+        return <MaintainOrder />;
+      case 3:
+        return <MaintainCar />;
     }
   }
 
@@ -188,16 +193,11 @@ function DashboardContent() {
           <Toolbar />
           <Container sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-
-              {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  {/* <Orders /> */}
                   {getModuleContent(moduleIndex)}
                 </Paper>
               </Grid>
-
-
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>
