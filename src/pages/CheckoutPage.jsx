@@ -47,9 +47,9 @@ const theme = createTheme();
 const createOrderData = (orderInfo, couponId) => {
     const userInfo = getUserInfo();
     let data = {
-        "couponId": couponId || 0,
+        "couponId": couponId || 'null',
         "dailyLimitOdometer": orderInfo.carInfo.limitMilePerDay,
-        "dropDate": orderInfo.searchData.dropOffTime,
+        "expectedDate": orderInfo.searchData.dropOffTime,
         "dropLocId": orderInfo.searchData.dropOffLocation,
         "pickDate": orderInfo.searchData.pickupTime,
         "pickLocId": orderInfo.searchData.pickUpLocation,
@@ -59,9 +59,7 @@ const createOrderData = (orderInfo, couponId) => {
         "startOdometer": 0
 
     }
-    if (data.couponId === 0) {
-        delete data.couponId;
-    }
+    
     return data;
 }
 
@@ -106,6 +104,7 @@ export default function Checkout(props) {
 
 
     const placeOrder = async (orderInfo, couponId) => {
+        console.log("couponId", couponId)
         let data = createOrderData(orderInfo, couponId)
         let response = await api.createOrder(data);
         if (response && response === 200) {

@@ -1,15 +1,9 @@
 import * as React from 'react';
-
 import orderApi from '../api/order';
-import Paper from '@mui/material/Paper';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { getLocationList } from '../utils/user';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 
 const api = new orderApi();
 
@@ -50,7 +44,7 @@ const renderBasicInfo = (data) => {
             {data.map((payment, index) => (
                 <Grid container item xs={12} key={index}>
                     <Grid item xs={6}>
-                        <Typography  variant="body1" gutterBottom>{payment.name}</Typography>
+                        <Typography variant="body1" gutterBottom>{payment.name}</Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body1" gutterBottom>{payment.val}</Typography>
@@ -82,9 +76,14 @@ const getBasicInfo1 = (data) => {
             val: convertDate(new Date(data.pickDate))
         },
         {
+            name: 'Expected Drop off Time',
+            val: convertDate(new Date(data.expectedDate))
+        },
+        {
             name: 'Pick up Location',
             val: getLocation(data.locationList, data.pickLocId)
         }
+
     );
     return result;
 }
@@ -92,26 +91,21 @@ const getBasicInfo1 = (data) => {
 const getBasicInfo2 = (data) => {
     if (!data || !data) return [];
     let result = [];
-    result.push(
-        {
-            name: 'Expected Drop off Time',
-            val: convertDate(new Date(data.expectedDate))
-        },
-        {
-            name: 'Expected Drop off Location',
-            val: getLocation(data.locationList, data.droplocId)
-        },
-        {
-            name: 'Drop off Time',
-            val: convertDate(new Date(data.dropDate))
-        },
-        {
+
+    if (data.orderStatus !== 0) {
+
+        result.push(
+            {
+                name: 'Drop off Location',
+                val: getLocation(data.locationList, data.dropLocId)
+            },
+            {
+                name: 'Drop off Time',
+                val: convertDate(new Date(data.dropDate))
+            }, {
             name: 'Basic Cost',
             val: data.basicCost
-        }
-    );
-    if (data.orderStatus !== 0) {
-        result.push({
+        }, {
             name: 'Total Cost',
             val: (data.extraCost || 0) + data.basicCost
         })
@@ -162,7 +156,6 @@ export default function OrderList({ handleOpenDialog }) {
     React.useEffect(() => {
         async function fetchData() {
             let response = await api.getUserOrders();
-            console.log("response", response)
             if (response !== 400) {
                 setOrderList(response);
             }
@@ -172,9 +165,9 @@ export default function OrderList({ handleOpenDialog }) {
     }, [])
     const locationList = getLocationList();
 
-    const RenderButton = ({ status, handleOpenDialog, invoiceId }) => {
+    const RenderButton = ({ status, handleOpenDialog, invoiceId, orderInfo }) => {
         const handleClickButton = () => {
-            handleOpenDialog(invoiceId)
+            handleOpenDialog(invoiceId, orderInfo)
         }
         let text = '';
         switch (status) {
@@ -199,14 +192,13 @@ export default function OrderList({ handleOpenDialog }) {
         }
         return null;
     }
-
     return (
         <>
-            {orderList.map((order, index) => (
+            {orderList?.map((order, index) => (
                 <Grid item container key={order.orderVO.orderId + index} xs={12} sx={{ border: '2px solid #ffc107', borderBottom: '4px solid #ffc107', borderRadius: '20px', padding: '25px', marginTop: '30px' }}>
                     <RenderBoxHeader orderId={order.orderVO.orderId} status={order.orderVO.orderStatus} />
                     <RenderMainBox info={Object.assign({}, { locationList: locationList }, order?.orderVO, order?.orderVehicleVO)} />
-                    <RenderButton status={order.orderVO.orderStatus} handleOpenDialog={handleOpenDialog} invoiceId={order?.invoiceId} />
+                    <RenderButton status={order.orderVO.orderStatus} handleOpenDialog={handleOpenDialog} invoiceId={order?.invoiceId} orderInfo={order} />
                 </Grid>
             ))}
         </>

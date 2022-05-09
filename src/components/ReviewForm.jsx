@@ -13,6 +13,7 @@ import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import GasMeterIcon from '@mui/icons-material/GasMeter';
 import HdrAutoIcon from '@mui/icons-material/HdrAuto';
 import Coupon from '../components/Coupon';
+import {getLocationById} from '../utils/user';
 
 const Title = (props) => {
   return (
@@ -137,11 +138,11 @@ const getBasicInfo = (orderInfo) => {
     },
     {
       name: 'Pick up Location',
-      val: searchData.pickUpLocation
+      val: getLocationById(searchData.pickUpLocation)
     },
     {
       name: 'Drop off Location',
-      val: searchData.dropOffLocation
+      val: getLocationById(searchData.dropOffLocation)
     },
   )
 

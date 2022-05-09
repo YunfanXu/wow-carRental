@@ -68,7 +68,7 @@ export default function MaintainCar() {
         );
     }
 
-    const updatecarList = async () => {
+    const updateCarList = async () => {
         let updatedCarList = await api.getCarList();
         setCarList(updatedCarList)
     }
@@ -76,13 +76,13 @@ export default function MaintainCar() {
     const handleDeleteButton = async (vinId) => {
         const response = await api.deleteCar(vinId);
         if (response === 'success') {
-            updatecarList();
+            updateCarList();
         }
     }
 
 
     React.useEffect(() => {
-        updatecarList();
+        updateCarList();
     }, []);
 
     return (
@@ -131,7 +131,7 @@ export default function MaintainCar() {
                     ))}
                 </TableBody>
             </Table>
-            <CarDialog open={open} handleClose={handleClose} updatecarList={updatecarList} />
+            <CarDialog open={open} handleClose={handleClose} updateCarList={updateCarList} />
             {/* <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
                 See more orders
             </Link> */}

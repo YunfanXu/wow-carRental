@@ -17,6 +17,7 @@ import carApi from '../../api/car';
 import { getManufacture, getModelList, getLocationList } from '../../utils/user';
 
 
+
 const CarForm = ({ carInfo }) => {
     let manufactureList = getManufacture();
     let modelList = getModelList();
@@ -46,7 +47,7 @@ const CarForm = ({ carInfo }) => {
             <Grid item xs={12} sm={6}>
                 <TextField
                     required
-                    name="name"
+                    name="modelName"
                     label="Car Model Name"
                     fullWidth
                     variant="standard"
@@ -63,7 +64,7 @@ const CarForm = ({ carInfo }) => {
                     defaultValue={carInfo?.class_type}
                 />
             </Grid>
-            <Grid item xs={6} >
+            {/* <Grid item xs={6} >
                 <FormControl fullWidth>
                     <InputLabel >Model Name</InputLabel>
                     <Select
@@ -77,7 +78,7 @@ const CarForm = ({ carInfo }) => {
                         ))}
                     </Select>
                 </FormControl>
-            </Grid>
+            </Grid> */}
             <Grid item xs={6} >
                 <FormControl fullWidth>
                     <InputLabel >Manufacture Name</InputLabel>
@@ -99,7 +100,6 @@ const CarForm = ({ carInfo }) => {
                     <Select
                         value={office}
                         name="officeId"
-
                         label="office"
                         onChange={handleOfficeChange}
                     >
@@ -122,7 +122,7 @@ const CarForm = ({ carInfo }) => {
             <Grid item xs={12} sm={6}>
                 <TextField
                     required
-                    name="seat"
+                    name="seatNum"
                     label="Seats"
                     fullWidth
                     variant="standard"
@@ -172,7 +172,20 @@ const CarForm = ({ carInfo }) => {
         </>
     )
 }
-export default function CarDialog({ open, handleClose, updateOfficeList }) {
+
+const getRandomString = function (count = 7) {
+    let acc = '';
+    for (let i = 0; i < count; i++) {
+        if (Math.random() >= 0.5) {
+            acc += String.fromCharCode(Math.floor(Math.random() * (91 - 65)) + 65);
+
+        } else {
+            acc += ~~(Math.random() * 10)
+        }
+    }
+    return acc;
+}
+export default function CarDialog({ open, handleClose, updateCarList }) {
     const [loading, setLoading] = React.useState(false);
     const [carState, setCarState] = React.useState({
         name: '',
@@ -190,7 +203,6 @@ export default function CarDialog({ open, handleClose, updateOfficeList }) {
     const api = new carApi();
 
     React.useEffect(() => {
-        console.log("open.carInfo",open.carInfo)
         if (open && open.carInfo) {
             setCarState({ ...open.carInfo });
         }
@@ -200,42 +212,36 @@ export default function CarDialog({ open, handleClose, updateOfficeList }) {
         setLoading(true);
         const data = new FormData(event.currentTarget);
 
-        let carInfo = {}, response = null;
-        if (open.isEdit) {
-            carInfo = {
-                vehicleId: carState?.vin_id || Math.round(Math.random()*10000000000),
-                carClassDTO: {
-                    classType: data.get('class_type'),
-                    dailyMileLimit: data.get('limitMilePerDay'),
-                    rentalRatePerDay: data.get('pricePerDay'),
-                    imageUrl: data.get('image_url'),
-                    overFee: data.get('overFee'),
-                },
-                modelId: data.get('modelId'),
-                manufactureId: data.get('manufactureId'),
-                officeId: data.get('officeId'),
-            }
+        let carInfo = {
+            carClassDTO: {
+                classType: data.get('class_type'),
+                dailyMileLimit: parseInt(data.get('limitMilePerDay')),
+                rentalRatePerDay: parseInt(data.get('pricePerDay')),
+                imageUrl: data.get('image_url'),
+                overFee: parseInt(data.get('overFee')),
+            },
+            manId: parseInt(data.get('manufactureId')),
+            modelDTO: {
+                modelName: data.get('modelName'),
+                manId: parseInt(data.get('manufactureId')),
+                seatNum: parseInt(data.get('seatNum')),
+                year: data.get('year'),
+            },
+            officeDTO: {},
+            vehicleId: open?.isEdit ? open.carInfo.vin_id : getRandomString(14),
+            officeId: parseInt(data.get('officeId')),
+            plateNumber: getRandomString()
+        };
 
-            console.log("carInfo", carInfo)
-            response = await api.updateCar(carInfo, open.carInfo.officeId)
+        let response = null;
+
+        if (open.isEdit) {
+            response = await api.updateCar(carInfo)
         } else {
-            carInfo = {
-                carClassDTO: {
-                    classType: data.get('class_type'),
-                    dailyMileLimit: data.get('limitMilePerDay'),
-                    rentalRatePerDay: data.get('pricePerDay'),
-                    imageUrl: data.get('image_url'),
-                    overFee: data.get('overFee'),
-                },
-                modelId: data.get('modelId'),
-                manufactureId: data.get('manufactureId'),
-                officeId: data.get('officeId'),
-            }
-            console.log("carInfo", carInfo)
             response = await api.createCar(carInfo)
         }
-        if (response && response === 'success') {
-            updateOfficeList();
+        if (response && response === 200 ) {
+            updateCarList();
             handleClose();
         }
         setLoading(false);

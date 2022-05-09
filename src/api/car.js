@@ -26,17 +26,16 @@ export default class CarApi {
             result = await fetch(this.basePath + '/api/carInfo/1', data)
                 .then(response => response.json())
                 .then(response => {
-                    console.log("getCarList:", response.data);
                     if (response.code === 200 || response.message === 'success') {
                         return response.data
                     } else {
                         return 400
                     }
                 }).catch(e => {
-                    console.log("Error:", e.message)
+                    console.error("Error:", e.message)
                 })
         } catch (e) {
-            console.log("Error:", e.message)
+            console.error("Error:", e.message)
         }
         return result;
     }
@@ -57,10 +56,10 @@ export default class CarApi {
                         return 400
                     }
                 }).catch(e => {
-                    console.log("Error:", e.message)
+                    console.error("Error:", e.message)
                 })
         } catch (e) {
-            console.log("Error:", e.message)
+            console.error("Error:", e.message)
         }
         return result;
     }
@@ -90,16 +89,17 @@ export default class CarApi {
     }
 
     async deleteCar(inputData) {
-        console.log("deleteCar", inputData)
-
         const params = { ...this.params };
         const { token } = getUserInfo();
         params.headers.set("Authorization", token);
         params.method = 'DELETE';
-        const data = Object.assign({}, params);
+        const data = Object.assign({}, params,
+            {
+                body: JSON.stringify(inputData)
+            });
         let result = 400;
         try {
-            result = await fetch(this.basePath + '/carInfo/' + inputData, data)
+            result = await fetch(this.basePath + '/api/carInfo', data)
                 .then(response => response.json())
                 .then(response => {
                     console.log("response", response)
@@ -118,7 +118,7 @@ export default class CarApi {
     }
 
     async updateCar(carInfo) {
-        console.log("carInfo",JSON.stringify(carInfo))
+        console.log("carInfo", JSON.stringify(carInfo))
         const params = { ...this.params };
         const { token } = getUserInfo();
         params.headers.set("Authorization", token);
@@ -128,11 +128,11 @@ export default class CarApi {
             { body: JSON.stringify(carInfo) });
         let result = 400;
         try {
-            result = await fetch(this.basePath + '/carInfo', data)
+            result = await fetch(this.basePath + '/api/carInfo', data)
                 .then(response => response.json())
                 .then(response => {
-                    if (response.code === 200) {
-                        return response.data
+                    if (response.code === 200 || response.message === 'success') {
+                        return response.code
                     } else {
                         return 400
                     }
@@ -155,19 +155,19 @@ export default class CarApi {
             { body: JSON.stringify(carInfo) });
         let result = 400;
         try {
-            result = await fetch(this.basePath + '/carInfo', data)
+            result = await fetch(this.basePath + '/api/carInfo', data)
                 .then(response => response.json())
                 .then(response => {
-                    if (response.code === 200) {
-                        return response.data
+                    if (response.code === 200 || response.message === 'success') {
+                        return response.code
                     } else {
                         return 400
                     }
                 }).catch(e => {
-                    console.log("Error:", e.message)
+                    console.error("Error:", e.message)
                 })
         } catch (e) {
-            console.log("Update User carInfo Error:", e.message)
+            console.error("Update User carInfo Error:", e.message)
         }
         return result;
     }

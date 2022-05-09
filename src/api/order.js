@@ -1,3 +1,4 @@
+import { formLabelClasses } from "@mui/material";
 import { getUserInfo } from "../utils/user";
 
 export default class UserApi {
@@ -74,8 +75,8 @@ export default class UserApi {
             { body: JSON.stringify(inputData) });
         let result = 400;
         try {
+            console.log("order", JSON.stringify(inputData))
             result = await fetch(this.basePath + '/api/order', data)
-
                 .then(response => response.json())
                 .then(response => {
                     console.log("createOrder", response)
@@ -98,11 +99,17 @@ export default class UserApi {
         const { token } = getUserInfo();
         params.headers.set("Authorization", token);
         params.method = 'POST';
+
+        let uploadData = {
+            paymentUnitDTOList: inputData.data,
+            size: 0
+        }
         const data = Object.assign({}, params,
-            { body: JSON.stringify(inputData) });
+            { body: JSON.stringify(uploadData) });
         let result = 400;
+        console.log("INPUT createPayment", data.body)
         try {
-            result = await fetch(this.basePath + '/api/payment', data)
+            result = await fetch(this.basePath + '/api/payment/' + inputData.invoiceId, data)
                 .then(response => response.json())
                 .then(response => {
                     console.log("createPayment", response)

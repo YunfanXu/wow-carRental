@@ -84,9 +84,8 @@ export default function Order() {
         )
     }
 
-    const handleOpenDialog = (invoiceId) => {
-        console.log("invoiceId", invoiceId)
-        setOpenDialog({isOpen: true, invoiceId});
+    const handleOpenDialog = (invoiceId, orderInfo) => {
+        setOpenDialog({isOpen: true, invoiceId, orderInfo});
     }
     const RenderOrder = () => {
         return (

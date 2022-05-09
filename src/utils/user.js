@@ -64,3 +64,8 @@ export function setModelList(data) {
 export function getModelList() {
     return JSON.parse(localStorage.getItem(MODEL));
 }
+
+export function getLocationById(id){
+    let locationList = JSON.parse(localStorage.getItem(LOCATION));
+    return locationList.filter(location => location.officeId === id)[0]?.name || '';
+} 
