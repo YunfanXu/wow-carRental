@@ -13,7 +13,7 @@ import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import GasMeterIcon from '@mui/icons-material/GasMeter';
 import HdrAutoIcon from '@mui/icons-material/HdrAuto';
 import Coupon from '../components/Coupon';
-import {getLocationById} from '../utils/user';
+import { getLocationById } from '../utils/user';
 
 const Title = (props) => {
   return (
@@ -28,7 +28,7 @@ const createIconTextBox = (icon, text) => {
     <>
       <Grid item xs={2}>{icon}</Grid>
       <Grid item xs={10}>
-        <Typography variant="body1" gutterBottom>
+        <Typography variant="h6" sx={{ mb: 0.3, ml: 1, fontWeight: 700 }} component="div" gutterBottom>
           {text}
         </Typography>
       </Grid>
@@ -37,19 +37,19 @@ const createIconTextBox = (icon, text) => {
 }
 
 const renderSeatBox = (value) => {
-  return createIconTextBox(<PeopleAltIcon color="primary" sx={{ fontSize: 20 }} />, value + " People");
+  return createIconTextBox(<PeopleAltIcon color="primary" sx={{ fontSize: 24 }} />, value + " People");
 }
 
 const renderGasBox = (value) => {
-  return createIconTextBox(<LocalGasStationIcon color="primary" sx={{ fontSize: 20 }} />, value);
+  return createIconTextBox(<LocalGasStationIcon color="primary" sx={{ fontSize: 24 }} />, value);
 }
 
 const renderOrilBox = (value) => {
-  return createIconTextBox(<GasMeterIcon color="primary" sx={{ fontSize: 20 }} />, value + "mpg");
+  return createIconTextBox(<GasMeterIcon color="primary" sx={{ fontSize: 24 }} />, value + "mpg");
 }
 
 const renderDriveModeBox = (value) => {
-  return createIconTextBox(<HdrAutoIcon color="primary" sx={{ fontSize: 20 }} />, value);
+  return createIconTextBox(<HdrAutoIcon color="primary" sx={{ fontSize: 24 }} />, value);
 }
 
 const renderCarInfo = (car) => {
@@ -57,43 +57,42 @@ const renderCarInfo = (car) => {
     <Card
       sx={{ padding: '20px', display: 'flex', flexDirection: 'row' }}
     >
-      <CardMedia
-        component="img"
-        height="340"
-        style={{ objectFit: 'contain' }}
-        image={car.image_url || "https://source.unsplash.com/random"}
-        alt={car.name}
-      />
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Grid container >
-          <Grid item xs={10}>
-            <Typography gutterBottom variant="h5" component="h2">
-              {car.name}
-            </Typography>
-          </Grid>
-          <Grid item xs={2}>
-            <Typography gutterBottom variant="h5" component="h2">
-              {car.year}
-            </Typography>
-          </Grid>
-          <Grid item container xs={6}>{renderSeatBox(car.seat)}</Grid>
-          <Grid item container xs={6}>{renderGasBox(car.powerMode)}</Grid>
-          <Grid item container xs={6}>{renderOrilBox(car.mpg)}</Grid>
-          <Grid item container xs={6}>{renderDriveModeBox(car.driveMode)}</Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={8}>
+          <CardMedia
+            component="img"
+            width="100%"
+            height="340px"
+            style={{ objectFit: 'contain' }}
+            image={car.image_url || "https://source.unsplash.com/random"}
+            alt={car.name}
+          />
         </Grid>
-      </CardContent>
+        <Grid item xs={12} md={4}>
+          <CardContent sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={9}>
+                <Typography gutterBottom variant="h4" component="h2" sx={{ letterSpacing: 3 }}>
+                  {car.name}
+                </Typography>
+              </Grid>
+              <Grid item xs={3}>
+                <Typography gutterBottom variant="h4" component="h2" sx={{ letterSpacing: 3 }}>
+                  {car.year}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} container spacing={2} sx={{ mt: 0 }}>
+                <Grid item container xs={6} alignItems='flex-end'>{renderSeatBox(car.seat)}</Grid>
+                <Grid item container xs={6} alignItems='flex-end'>{renderGasBox(car.powerMode)}</Grid>
+                <Grid item container xs={6} alignItems='flex-end'>{renderOrilBox(car.mpg)}</Grid>
+                <Grid item container xs={6} alignItems='flex-end'>{renderDriveModeBox(car.driveMode)}</Grid>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Grid>
+      </Grid>
     </Card>
   )
-}
-
-
-const getPayment = (cardInfo) => {
-  if (!cardInfo) return [];
-  return [
-    { name: 'Card holder', detail: cardInfo.cardName },
-    { name: 'Card number', detail: cardInfo.cardNumber },
-    { name: 'Expiry date', detail: cardInfo.expDate },
-  ]
 }
 
 
@@ -156,10 +155,10 @@ const renderBasicInfo = (orderInfo) => {
       {data.map((payment) => (
         <React.Fragment key={payment.name}>
           <Grid item xs={6}>
-            <Typography gutterBottom>{payment.name}</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 500, letterSpacing: 0.75 }}>{payment.name}</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography gutterBottom>{payment.val}</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 500, letterSpacing: 0.75 }}>{payment.val}</Typography>
           </Grid>
         </React.Fragment>
       ))}
@@ -174,26 +173,26 @@ export default function Review({ orderInfo, couponId, handleChange, discount = 1
       <Title gutterBottom>
         Order summary
       </Title>
-      <Grid container sx={{ flexGrow: 1, padding: '30px 0' }} >
+      <Grid container sx={{ flexGrow: 1, padding: '30px 0' }} justifyContent='center'>
         {renderCarInfo(orderInfo.carInfo)}
       </Grid>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
-          <Title gutterBottom sx={{ mt: 2 }}>
+        <Grid item xs={12} md={6} sx={{ mt: 2 }}>
+          <Title gutterBottom>
             Basic Infomation:
           </Title>
-          <Grid container>
+          <Grid container sx={{ mt: 2 }}>
             {renderBasicInfo(orderInfo)}
           </Grid>
         </Grid>
-        <Grid item container xs={12} md={6}>
-          <Title gutterBottom sx={{ mt: 2 }}>
+        <Grid item container xs={12} md={6} sx={{ mt: 2 }}>
+          <Title gutterBottom>
             Select Coupons:
           </Title>
-          <Grid item xs={12} >
+          <Grid item xs={12} sx={{ mt: 2 }} >
             <Coupon couponId={couponId} handleChange={handleChange} />
           </Grid>
-          <Grid container item xs={10} justifyContent='space-between' sx={{ padding: '20px 0' }}>
+          <Grid container item xs={10} justifyContent='space-between' sx={{ padding: '20px 0', mt: 6 }}>
             <Title sx={{ fontWeight: 800 }}>
               Total Cost:
             </Title>

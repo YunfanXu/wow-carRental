@@ -42,12 +42,14 @@ const renderBasicInfo = (data) => {
     return (
         <>
             {data.map((payment, index) => (
-                <Grid container item xs={12} key={index}>
+                <Grid container item xs={12} key={index} sx={{mt:'4px'}}>
                     <Grid item xs={6}>
-                        <Typography variant="body1" gutterBottom>{payment.name}</Typography>
+                        <Typography variant="h6" gutterBottom sx={{ letterSpacing: 1 }}>
+                            {payment.name}</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                        <Typography variant="body1" gutterBottom>{payment.val}</Typography>
+                        <Typography variant="h6" gutterBottom sx={{ letterSpacing: 1 }}>
+                            {payment.val}</Typography>
                     </Grid>
                 </Grid>
             ))}
@@ -123,11 +125,11 @@ const getBasicInfoRow2 = (info) => {
 }
 const RenderBoxHeader = ({ orderId, status }) => {
     return (
-        <Grid container item xs={12} justifyContent='space-between'>
-            <Typography variant="h6" gutterBottom>
+        <Grid container item xs={12} justifyContent='space-between' sx={{ mb: 2 }}>
+            <Typography variant="h5" gutterBottom sx={{ letterSpacing: 1.5, fontWeight: 600 }}>
                 Order Number: {orderId}
             </Typography>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h5" gutterBottom sx={{ letterSpacing: 1.5, fontWeight: 600 }}>
                 Order Status: {getStatusContent(status)}
             </Typography>
         </Grid >
@@ -184,7 +186,7 @@ export default function OrderList({ handleOpenDialog }) {
         if (status === 1) {
             return (
                 <Grid item container xs={12} justifyContent='flex-end'>
-                    <Button variant="contained" onClick={handleClickButton} >
+                    <Button variant="contained"  size='large' onClick={handleClickButton} >
                         {text}
                     </Button>
                 </Grid>

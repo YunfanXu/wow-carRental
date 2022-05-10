@@ -27,6 +27,7 @@ export default class CarApi {
                 .then(response => response.json())
                 .then(response => {
                     if (response.code === 200 || response.message === 'success') {
+                        console.log("getCarList", response.data)
                         return response.data
                     } else {
                         return 400

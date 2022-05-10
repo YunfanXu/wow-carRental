@@ -20,8 +20,7 @@ import { RenderIndividual, RenderErrorBox, RenderAddress } from '../modules/User
 import UserApi from '../api/user.js';
 import { getUserInfo, setUser } from '../utils/user';
 import CouponList from '../components/CouponList';
-import HistoryIcon from '@mui/icons-material/History';
-import OrderList from '../components/OrderList';
+
 
 const theme = createTheme();
 
@@ -188,23 +187,6 @@ export default function User() {
         )
     }
 
-    const RenderOrder = () => {
-        return (
-            <Box
-                sx={{
-                    my: 8,
-                    mx: 4,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    flexGrow: 1
-                }}
-            >
-                {renderIconTitle('Coupons', <HistoryIcon />)}
-                <OrderList />
-            </Box>
-        )
-    }
     return (
         <ThemeProvider theme={theme}>
             <div style={{ overflow: 'auto' }}>

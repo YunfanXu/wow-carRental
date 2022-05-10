@@ -51,7 +51,6 @@ export function getLocationList() {
 }
 
 export function setManufacture(data) {
-    console.log("setManufacture", data)
     return localStorage.setItem(MANUFACTURE, JSON.stringify(data));
 }
 export function getManufacture() {

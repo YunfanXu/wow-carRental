@@ -1,10 +1,8 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import PaymentForm from './PaymentForm';
 import Grid from '@mui/material/Grid';
@@ -148,10 +146,13 @@ export default function PaymentDialog({ open, handleClose }) {
     }
 
     const handleAminationComplete = (confetti) => {
+        console.log("ANIMATION END!!!")
         if (startAnimation) {
+            setStartAnimation(false);
             confetti.reset()
         }
     }
+
     return (
         <div>
             <Confetti
