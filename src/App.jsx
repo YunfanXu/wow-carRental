@@ -7,7 +7,7 @@ import Checkout from "./pages/CheckoutPage";
 import UserPage from "./pages/userPage";
 import OrderPage from "./pages/OrderPage";
 import AdminPage from "./pages/AdminPage";
-
+import NotFound from "./pages/404Page";
 import { useState, useEffect } from "react";
 import {
   Routes,
@@ -42,6 +42,7 @@ const App = () => {
           <Route path="/user" element={<UserPage />} />
           <Route path="/order" element={<OrderPage />} />
 
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
       <LoginForm isShowLogin={isShowLogin} handleLoginClick={handleLoginClick} handleJoinClick={handleJoinClick} />
