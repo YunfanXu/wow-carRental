@@ -4,6 +4,9 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { getLocationList } from '../utils/user';
 import Typography from '@mui/material/Typography';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
 
 const api = new orderApi();
 
@@ -42,7 +45,7 @@ const renderBasicInfo = (data) => {
     return (
         <>
             {data.map((payment, index) => (
-                <Grid container item xs={12} key={index} sx={{mt:'4px'}}>
+                <Grid container item xs={12} key={index} sx={{ mt: '4px' }}>
                     <Grid item xs={6}>
                         <Typography variant="h6" gutterBottom sx={{ letterSpacing: 1 }}>
                             {payment.name}</Typography>
@@ -154,6 +157,49 @@ const RenderMainBox = ({ info }) => {
 
 export default function OrderList({ handleOpenDialog }) {
     const [orderList, setOrderList] = React.useState([]);
+    const [sortVal, setSortVal] = React.useState('');
+
+
+
+    const sortOrderNumber = (isAsc = false) => {
+        setOrderList(orderList.sort((a, b) => {
+            if (isAsc) {
+                return Number(a.orderVO.orderId) - Number(b.orderVO.orderId);
+            }
+            return Number(b.orderVO.orderId) - Number(a.orderVO.orderId)
+        }));
+    }
+
+    const sortOrderStatus = (status) => {
+        setOrderList(orderList.sort((a, b) => {
+            if(a.orderVO.orderStatus === status || b.orderVO.orderStatus === status){
+                return -1;
+            }
+            return 1;
+        }));
+    }
+    const handleSortChange = (e) => {
+        let value = e.target.value;
+        setSortVal(value);
+        console.log("value", value)
+        switch (value) {
+            case 1:
+                sortOrderNumber();
+                break;
+            case 0:
+                sortOrderNumber(true);
+                break;
+            case 2:
+                sortOrderStatus(0);
+                break;
+            case 3:
+                sortOrderStatus(1);
+                break;
+            case 4:
+                sortOrderStatus(2);
+                break;
+        }
+    }
 
     React.useEffect(() => {
         async function fetchData() {
@@ -186,7 +232,7 @@ export default function OrderList({ handleOpenDialog }) {
         if (status === 1) {
             return (
                 <Grid item container xs={12} justifyContent='flex-end'>
-                    <Button variant="contained"  size='large' onClick={handleClickButton} >
+                    <Button variant="contained" size='large' onClick={handleClickButton} >
                         {text}
                     </Button>
                 </Grid>
@@ -196,8 +242,33 @@ export default function OrderList({ handleOpenDialog }) {
     }
     return (
         <>
+            <Grid container >
+                <Grid item xs={6} md={4} container alignItems='center' >
+                    <Typography variant="h4" display="block" gutterBottom fontWeight={700} >
+                        SORT BY:
+                    </Typography>
+                    <FormControl sx={{ m: 1, minWidth: 200, ml: 4 }}>
+                        <Select
+                            value={sortVal}
+                            onChange={handleSortChange}
+                            displayEmpty
+                            inputProps={{ 'aria-label': 'Without label' }}
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={0}>Order Number: Small to Big </MenuItem>
+                            <MenuItem value={1}>Order Number: Big to Small</MenuItem>
+                            <MenuItem value={2}>Order Status: Processing</MenuItem>
+                            <MenuItem value={4}>Order Status: Finished</MenuItem>
+                            <MenuItem value={3}>Order Status: Need Payment</MenuItem>
+
+                        </Select>
+                    </FormControl>
+                </Grid>
+            </Grid>
             {orderList?.map((order, index) => (
-                <Grid item container key={order.orderVO.orderId + index} xs={12} sx={{ border: '2px solid #ffc107', borderBottom: '4px solid #ffc107', borderRadius: '20px', padding: '25px', marginTop: '30px' }}>
+                <Grid item container key={index} xs={12} sx={{ border: '2px solid #ffc107', borderBottom: '4px solid #ffc107', borderRadius: '20px', padding: '25px', marginTop: '30px' }}>
                     <RenderBoxHeader orderId={order.orderVO.orderId} status={order.orderVO.orderStatus} />
                     <RenderMainBox info={Object.assign({}, { locationList: locationList }, order?.orderVO, order?.orderVehicleVO)} />
                     <RenderButton status={order.orderVO.orderStatus} handleOpenDialog={handleOpenDialog} invoiceId={order?.invoiceId} orderInfo={order} />

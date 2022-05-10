@@ -141,7 +141,7 @@ export default function CarsGallery({ searchData }) {
         open: true,
         message: 'Please Login First!'
       });
-    } else if (!searchData) {
+    } else if (!searchData || !searchData.dropOffLocation || !searchData.pickUpLocation) {
       setOpenSnack({
         open: true,
         message: 'Please Fill in the Search bar!'
@@ -186,12 +186,12 @@ export default function CarsGallery({ searchData }) {
         </Box>
         <Container sx={{ py: 8 }} maxWidth="xl">
           {/* End hero unit */}
-          <Grid container >
+          <Grid container sx={{ mb: 6 }}>
             <Grid item xs={6} md={4} container alignItems='center'>
-              <Typography variant="h6" display="block" gutterBottom>
+              <Typography variant="h4" display="block" gutterBottom fontWeight={700} >
                 SORT BY:
               </Typography>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <FormControl sx={{ m: 1, minWidth: 200, ml: 4 }}>
                 <Select
                   value={sortVal}
                   onChange={handleSortChange}
@@ -206,7 +206,6 @@ export default function CarsGallery({ searchData }) {
                 </Select>
               </FormControl>
             </Grid>
-
           </Grid>
           <Grid container spacing={2}>
             {renderData.map((car, index) => (

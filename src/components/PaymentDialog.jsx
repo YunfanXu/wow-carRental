@@ -146,7 +146,6 @@ export default function PaymentDialog({ open, handleClose }) {
     }
 
     const handleAminationComplete = (confetti) => {
-        console.log("ANIMATION END!!!")
         if (startAnimation) {
             setStartAnimation(false);
             confetti.reset()

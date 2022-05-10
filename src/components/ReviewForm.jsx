@@ -1,13 +1,9 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Box from '@mui/material/Box';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import GasMeterIcon from '@mui/icons-material/GasMeter';
