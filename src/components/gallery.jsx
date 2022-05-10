@@ -122,6 +122,18 @@ export default function CarsGallery({ searchData }) {
     }
   }
 
+  const filterByPickUpLocation = (locId) => {
+    setRenderData(carsData.filter(car => car.officeId === locId));
+  }
+
+  const filterByTypeAndPickUpLocation = (type, locId) => {
+    if (type === 'All') {
+      filterByPickUpLocation(locId);
+    } else {
+      setRenderData(carsData.filter(car => car.class_type === type && car.officeId === locId));
+    }
+  }
+
   const fetchCarlist = async () => {
     carList = await api.getCarList();
     if (Array.isArray(carList)) {
@@ -137,8 +149,12 @@ export default function CarsGallery({ searchData }) {
   }, [])
 
   React.useEffect(() => {
-    if (searchData && searchData.class_type) {
+    if (searchData && searchData.class_type && searchData.pickUpLocation) {
+      filterByTypeAndPickUpLocation(searchData.class_type, searchData.pickUpLocation)
+    } else if (searchData && searchData.class_type) {
       filterByType(searchData.class_type)
+    } else if (searchData && searchData.pickUpLocation) {
+      filterByPickUpLocation(searchData.pickUpLocation)
     }
   }, [searchData])
 

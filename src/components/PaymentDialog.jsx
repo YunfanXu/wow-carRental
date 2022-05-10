@@ -140,6 +140,11 @@ export default function PaymentDialog({ open, handleClose }) {
         if (response && response.status === 1) {
             setStartAnimation(true);
             handleClose();
+        } else {
+            wrapperSetInfo({
+                textType: 'error',
+                textContent: "Failed! Your payment was denied! Please check your information."
+            });
         }
         setLoading(false);
 
