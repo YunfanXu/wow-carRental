@@ -78,12 +78,21 @@ export default function CarsGallery({ searchData }) {
   };
 
   const handleSortChange = (e) => {
-    let type = e.target.value;
-    setSortVal(type);
-    if (type === 'Year') {
-      sortByYear();
-    } else if (type === 'Price') {
-      sortByPrice();
+    let value = e.target.value;
+    setSortVal(value);
+    switch (value) {
+      case 1:
+        sortByPrice(false);
+        break;
+      case 0:
+        sortByPrice();
+        break;
+      case 2:
+        sortByYear(false);
+        break;
+      case 3:
+        sortByYear();
+        break;
     }
   }
 
@@ -96,7 +105,7 @@ export default function CarsGallery({ searchData }) {
     }));
   }
 
-  const sortByYear = (isAsc = false) => {
+  const sortByYear = (isAsc = true) => {
     setRenderData(renderData.sort((a, b) => {
       if (isAsc) {
         return Number(a.year) - Number(b.year);
@@ -169,7 +178,6 @@ export default function CarsGallery({ searchData }) {
             {openSnack.message}
           </Alert>
         </Snackbar>
-        {/* Hero unit */}
         <Box
           id="features"
           sx={{
@@ -201,8 +209,10 @@ export default function CarsGallery({ searchData }) {
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
-                  <MenuItem value={'Price'}>Price</MenuItem>
-                  <MenuItem value={'Year'}>Year</MenuItem>
+                  <MenuItem value={0}>Price: Low to High</MenuItem>
+                  <MenuItem value={1}>Price: High to Low</MenuItem>
+                  <MenuItem value={2}>Made Year: Latest</MenuItem>
+                  <MenuItem value={3}>Made Year: Oldest</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
