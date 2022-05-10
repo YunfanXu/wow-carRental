@@ -1,4 +1,4 @@
-import { getUserInfo, getUserToken } from "../utils/user";
+import { getUserInfo } from "../utils/user";
 export default class AdminApi {
 
     constructor() {

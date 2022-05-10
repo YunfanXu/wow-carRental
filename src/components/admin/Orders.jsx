@@ -3,7 +3,6 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Title from './Title';
 import { getLocationList } from '../../utils/user';
 import adminAPI from '../../api/admin';
@@ -24,7 +23,7 @@ export default function MaintainOrder() {
     const today = new Date();
 
     const [, updateState] = React.useState();
-    const forceUpdate = React.useCallback(() => updateState({}), []);
+    // const forceUpdate = React.useCallback(() => updateState({}), []);
 
     const [loading, setLoading] = React.useState(false);
     const [dropOffLocation, setdropOffLocation] = React.useState('');

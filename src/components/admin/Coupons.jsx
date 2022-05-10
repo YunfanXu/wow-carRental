@@ -3,12 +3,6 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 import { getLocationList } from '../../utils/user';
 import OfficeDialog from './OfficeDialog';
@@ -32,13 +26,13 @@ export default function Coupons() {
     }
     console.log("locationList", locationList);
 
-    const EditButton = (officeInfo) => {
-        return (
-            <Button variant="outlined" onClick={() => handleEditButton(officeInfo)}>
-                Edit
-            </Button>
-        )
-    }
+    // const EditButton = (officeInfo) => {
+    //     return (
+    //         <Button variant="outlined" onClick={() => handleEditButton(officeInfo)}>
+    //             Edit
+    //         </Button>
+    //     )
+    // }
 
     const Corporation = () => {
         const [loading, setLoading] = React.useState(false);
@@ -192,28 +186,28 @@ export default function Coupons() {
     }
     
 
-    const handleAddButton = () => {
-        console.log("Add")
-        setOpen(
-            {
-                isOpen: true
-            }
-        );
+    // const handleAddButton = () => {
+    //     console.log("Add")
+    //     setOpen(
+    //         {
+    //             isOpen: true
+    //         }
+    //     );
 
-    }
+    // }
 
-    const handleEditButton = ({ officeInfo }) => {
-        setOpen(
-            {
-                isOpen: true,
-                isEdit: true,
-                officeInfo
-            }
-        );
+    // const handleEditButton = ({ officeInfo }) => {
+    //     setOpen(
+    //         {
+    //             isOpen: true,
+    //             isEdit: true,
+    //             officeInfo
+    //         }
+    //     );
 
-        console.log("Edit officeInfo", officeInfo)
+    //     console.log("Edit officeInfo", officeInfo)
 
-    }
+    // }
 
     return (
         <React.Fragment>

@@ -4,7 +4,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from "react-router-dom";
-import ResetPasswordDialog from './ResetPasswordDialog';
 import ChangePasswordDialog from './ResetPasswordDialog';
 
 export default function BasicMenu({ userName = "", handleLogout }) {

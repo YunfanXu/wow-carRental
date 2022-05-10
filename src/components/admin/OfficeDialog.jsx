@@ -4,7 +4,6 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -117,12 +116,6 @@ export default function OfficeDialog({ open, handleClose , updateOfficeList}) {
     });
 
     const api = new OfficeAPI();
-    const handleOfficeChange = (e) => {
-        setOfficeState({
-            ...officeState,
-            [e.target.name]: e.target.value
-        })
-    }
 
     React.useEffect(() => {
         if (open && open.officeInfo) {

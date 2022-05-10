@@ -11,7 +11,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Box from '@mui/material/Box';
-import carAPI from '../api/car';
 import officeAPI from '../api/officeApi';
 
 const CAR_CLASSES = ["All", "Station Wagon", "Sports Car", "Large Car", "Luxury Car", "Mid-size Car", "Small Car", "Pickup Truck", "Mini Van", "Commercial", "Premium SUV"]
@@ -24,7 +23,6 @@ export default function SearchBar({ handleSearchData, searchData }) {
     const [dropOffLocation, setdropOffLocation] = React.useState('');
     const [class_type, setclass_type] = React.useState('All');
     const [officeList, setOfficeList] = React.useState([]);
-    const api = new carAPI();
     const office_api = new officeAPI();
     const handlePickUpChange = (newValue) => {
         setPickupTime(newValue);

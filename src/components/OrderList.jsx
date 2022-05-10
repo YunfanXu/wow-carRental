@@ -143,7 +143,7 @@ const RenderMainBox = ({ info }) => {
     return (
         <Grid container item xs={12} spacing={2}>
             <Grid item xs={4}>
-                <img src={info.imgUrl} style={{ objectFit: 'contain', width: '100%' }} />
+                <img alt="carImage" src={info.imgUrl} style={{ objectFit: 'contain', width: '100%' }} />
             </Grid>
             <Grid item xs={4}>
                 {getBasicInfoRow1(info)}
@@ -172,7 +172,7 @@ export default function OrderList({ handleOpenDialog }) {
 
     const sortOrderStatus = (status) => {
         setOrderList(orderList.sort((a, b) => {
-            if(a.orderVO.orderStatus === status || b.orderVO.orderStatus === status){
+            if (a.orderVO.orderStatus === status || b.orderVO.orderStatus === status) {
                 return -1;
             }
             return 1;
@@ -198,6 +198,8 @@ export default function OrderList({ handleOpenDialog }) {
             case 4:
                 sortOrderStatus(2);
                 break;
+            default:
+                return;
         }
     }
 
@@ -228,6 +230,8 @@ export default function OrderList({ handleOpenDialog }) {
             case 2:
                 text = 'Finished';
                 break;
+            default:
+                return
         }
         if (status === 1) {
             return (

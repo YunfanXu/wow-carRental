@@ -1,4 +1,3 @@
-import { formLabelClasses } from "@mui/material";
 import { getUserInfo } from "../utils/user";
 
 export default class UserApi {

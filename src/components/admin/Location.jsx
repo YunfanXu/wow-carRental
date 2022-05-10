@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
@@ -129,9 +128,6 @@ export default function Orders() {
                 </TableBody>
             </Table>
             <OfficeDialog open={open} handleClose={handleClose} updateOfficeList={updateOfficeList}/>
-            {/* <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-                See more orders
-            </Link> */}
         </React.Fragment>
     );
 }

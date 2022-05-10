@@ -177,7 +177,7 @@ export default class UserApi {
 
     async updatePassword(inputData) {
         const params = { ...this.params };
-        const { id, token } = getUserInfo();
+        const { token } = getUserInfo();
         params.headers.set("Authorization", token);
         params.method = 'POST';
         const data = Object.assign({},

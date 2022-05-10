@@ -35,10 +35,6 @@ const renderIconTitle = (text, icon) => {
 }
 export default function Order() {
     const navigate = new useNavigate();
-    const api = new UserApi();
-    const [showError, setShowError] = React.useState(false);
-    const [isEditable, setEditable] = React.useState(false);
-    const [loading, setLoading] = React.useState(false);
     const [openDialog, setOpenDialog] = React.useState({
         isOpen: false,
         invoiceId: null
@@ -47,10 +43,6 @@ export default function Order() {
     const handleCloseDialog = () => {
         setOpenDialog({isOpen:false});
     };
-
-    const handleClickEditable = () => {
-        setEditable(!isEditable);
-    }
 
     const RenderTopBar = () => {
         return (

@@ -14,29 +14,24 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import carApi from '../../api/car';
-import { getManufacture, getModelList, getLocationList } from '../../utils/user';
+import { getManufacture, getLocationList } from '../../utils/user';
 
 
 
 const CarForm = ({ carInfo }) => {
     let manufactureList = getManufacture();
-    let modelList = getModelList();
     const locationList = getLocationList();
 
     const [manufactureId, setManufactureId] = React.useState(carInfo?.manId ? carInfo?.manId : '');
-    let defaultModle = '';
-    if (modelList.some(model => model.modelName === carInfo?.name)) {
-        defaultModle = modelList.filter(model => model.modelName === carInfo.name)[0]?.modelId;
-    }
-    const [modelId, setModelId] = React.useState(defaultModle);
+    // let modelList = getModelList();
+    // let defaultModle = '';
+    // if (modelList.some(model => model.modelName === carInfo?.name)) {
+    //     defaultModle = modelList.filter(model => model.modelName === carInfo.name)[0]?.modelId;
+    // }
     const [office, setOffice] = React.useState(carInfo?.officeId ? carInfo?.officeId : '');
 
     const handleManufactureId = (e) => {
         setManufactureId(e.target.value);
-    }
-
-    const handleModelId = (e) => {
-        setModelId(e.target.value);
     }
 
     const handleOfficeChange = (e) => {
@@ -64,21 +59,6 @@ const CarForm = ({ carInfo }) => {
                     defaultValue={carInfo?.class_type}
                 />
             </Grid>
-            {/* <Grid item xs={6} >
-                <FormControl fullWidth>
-                    <InputLabel >Model Name</InputLabel>
-                    <Select
-                        value={modelId}
-                        label="Model Name"
-                        name="modelId"
-                        onChange={handleModelId}
-                    >
-                        {modelList.map(item => (
-                            <MenuItem key={item.modelId} value={item.modelId}>{item.modelName}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-            </Grid> */}
             <Grid item xs={6} >
                 <FormControl fullWidth>
                     <InputLabel >Manufacture Name</InputLabel>
@@ -187,26 +167,26 @@ const getRandomString = function (count = 7) {
 }
 export default function CarDialog({ open, handleClose, updateCarList }) {
     const [loading, setLoading] = React.useState(false);
-    const [carState, setCarState] = React.useState({
-        name: '',
-        class_type: '',
-        year: '',
-        seat: '',
-        pricePerDay: '',
-        overFee: '',
-        limitMilePerDay: '',
-        image_url: '',
-    });
+    // const [carState, setCarState] = React.useState({
+    //     name: '',
+    //     class_type: '',
+    //     year: '',
+    //     seat: '',
+    //     pricePerDay: '',
+    //     overFee: '',
+    //     limitMilePerDay: '',
+    //     image_url: '',
+    // });
 
 
 
     const api = new carApi();
 
-    React.useEffect(() => {
-        if (open && open.carInfo) {
-            setCarState({ ...open.carInfo });
-        }
-    }, [])
+    // React.useEffect(() => {
+    //     if (open && open.carInfo) {
+    //         setCarState({ ...open.carInfo });
+    //     }
+    // }, [])
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
@@ -240,7 +220,7 @@ export default function CarDialog({ open, handleClose, updateCarList }) {
         } else {
             response = await api.createCar(carInfo)
         }
-        if (response && response === 200 ) {
+        if (response && response === 200) {
             updateCarList();
             handleClose();
         }

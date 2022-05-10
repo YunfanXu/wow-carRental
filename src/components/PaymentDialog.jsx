@@ -42,7 +42,6 @@ const getPaymentCardDTO = (paymentInfo, userId) => {
         paymentCardDTO: {
             fname,
             lname,
-            cardNum: paymentInfo.cardNum,
             expireDate: paymentInfo.expireDate,
             userId,
             cardNum: paymentInfo.cardNum,
